@@ -40,6 +40,10 @@ The listed model files have been extended with network topology information.
 
 - `ros2 launch system_description system_launcher.launch`
 
+Desired output:
+
+![](desired_output.png)
+
 ## Extracting URDF:
 
 - `ros2 param get /robot_state_publisher robot_description > robot_system_model.urdf`
