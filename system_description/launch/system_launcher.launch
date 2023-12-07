@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    
+    <!-- add robot arm with control box -->
+    <!-- https://design.ros2.org/articles/roslaunch_xml.html -->
+
+  <include file="$(find-pkg-share manipulator_description)/launch/view_ur.launch.py">
+    <arg name="ur_type" value="ur3e"/>
+    <arg name="add_controlbox" value="true"/>
+    <arg name="description_package" value="manipulator_description"/>
+    <arg name="description_file" value="robot_system_description.urdf.xacro"/>
+  </include>
+
+</launch>

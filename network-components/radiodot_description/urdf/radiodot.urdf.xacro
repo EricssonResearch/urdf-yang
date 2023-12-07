@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="radiodot">
+    
+    <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/nw_5g_rel15.urdf.xacro"/>
+
+    <xacro:macro name="radiodot" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=Radiobot_L2 L1_id:=Radiobot_L1">
+        
+        <joint name="radiodot_joint" type="fixed">
+            <origin xyz="-1 1.2 2" rpy="0 0 0" />
+            <parent link="${parent}"/>
+            <child link="radiodot_link"/>
+        </joint>
+
+        <link name="radiodot_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                <mesh filename="package://radiodot_description/meshes/radio_dot.stl" scale="0.01 0.01 0.01"/>
+                </geometry>
+                <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://radiodot_description/meshes/radio_dot.stl" scale="0.01 0.01 0.01"/>
+                </geometry>
+            </collision>
+        </link>   
+        
+        
+        <yang>
+            <!-- L2 network topology -->
+            <nw:network>
+                <nw:network-id>${L2_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l2t:l2-topology/>
+                </nw:network-types>
+                <nw:supporting-network>
+                    <nw:network-ref>${L1_network_id}</nw:network-ref>
+                </nw:supporting-network>
+                <nw:node>
+                    <nw:node-id>${L2_id}</nw:node-id>
+                    <nw:supporting-node>
+                        <nw:network-ref>${L2_id}</nw:network-ref>
+                        <nw:node-ref>${L1_id}</nw:node-ref>
+                    </nw:supporting-node>
+                    <xacro:cat6_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                </nw:node>
+            </nw:network>
+
+            <!-- Physical network topology -->
+            <nw:network>
+                <nw:network-id>${L1_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l1t:l1-topology/>
+                </nw:network-types>
+                <nw:node>
+                    <nw:node-id>${L1_id}</nw:node-id>
+                    <l1t:l1-node-attributes>
+                        <l1t:device-type>switch</l1t:device-type>
+                    </l1t:l1-node-attributes>
+                    <xacro:cat6_L1 id="eth_1"/>
+                </nw:node>
+            </nw:network>
+        </yang>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="cat6">
+
+    <xacro:property name="cat6_yaml_file" value="$(find interface-description)/config/cat6.yaml" />
+    <xacro:property name="cat6_props" value="${xacro.load_yaml(cat6_yaml_file)}"/>
+    <xacro:property name="cat6_length" value="${cat6_props['wired-connection']['length']}"/>
+    <xacro:property name="cat6_bandwidth" value="${cat6_props['wired-connection']['bandwidth']}"/>
+    <xacro:property name="cat6_jitter" value="${cat6_props['wired-connection']['jitter']}"/>
+    <xacro:property name="cat6_packet_loss" value="${cat6_props['wired-connection']['packet-loss']}"/>
+    <xacro:property name="cat6_reliability" value="${cat6_props['wired-connection']['reliability']}"/>
+    <xacro:property name="cat6_availability" value="${cat6_props['wired-connection']['availability']}"/>
+    <xacro:property name="cat6_throughput" value="${cat6_props['wired-connection']['throughput']}"/>
+    <xacro:property name="cat6_qos_level" value="${cat6_props['wired-connection']['qos-level']}"/>
+    <xacro:property name="cat6_energy_efficiency" value="${cat6_props['wired-connection']['energy-efficiency']}"/>
+    <xacro:property name="cat6_compatibility" value="${cat6_props['wired-connection']['compatibility']}"/>
+    <xacro:property name="cat6_cost" value="${cat6_props['wired-connection']['cost']}"/>
+    <xacro:property name="cat6_scalability" value="${cat6_props['wired-connection']['scalability']}"/>
+    <xacro:property name="cat6_security_level" value="${cat6_props['wired-connection']['security-level']}"/>
+
+
+    <xacro:macro name="cat6_L1" params="id">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:intertface-type>cat6</l1t:intertface-type>
+            </l1t:l1-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="cat6_L2" params="id supporting_network supporting_node supporting_tp">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <nt:supporting-termination-point>
+                <nt:network-ref>${supporting_network}</nt:network-ref>
+                <nt:node-ref>${supporting_node}</nt:node-ref>
+                <nt:tp-ref>${supporting_tp}</nt:tp-ref>
+            </nt:supporting-termination-point>
+            <l2t:l2-termination-point-attributes>
+                <l2t:bandwidth>${cat6_bandwidth}</l2t:bandwidth>
+                <l2t:jitter>${cat6_jitter}</l2t:jitter>
+            </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+</robot>

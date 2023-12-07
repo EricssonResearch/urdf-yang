@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<!-- xacro rg2ft mounted on the manipulator -->
+
+<robot name="rg2ft" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="rg2ft" params="parent">
+
+    <!-- rg2ft joint -->
+    <joint name="rg2ft_joint" type="fixed">
+      <!-- <origin xyz="0.045 -0.0085 0" rpy="1.5792 0 0"/> -->
+      <origin xyz="0.009 0 0.05" rpy="1.57 -1.57 1.57"/>
+      <parent link="${parent}"/>
+      <child link="rg2ft_body_link"/>
+    </joint>
+
+    <link name="rg2ft_body_link">
+        <!-- <origin rpy="0 0 0" xyz="0.0 0.0 0.05"/> -->
+        <inertial>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <mass value="0.5"/>
+        </inertial>
+        <gravity>1</gravity>
+        <visual>
+            <origin rpy="1.57 0 1.57" xyz="0 0 0"/>
+            <geometry>
+              <!-- <box size="0.1 0.2 0.1"/> -->
+              <mesh filename="package://onrobot_description/meshes/rg2ft_body.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey">
+              <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0.018 0 -0.015"/>
+            <geometry>
+              <!-- <mesh filename="package://onrobot_description/meshes/rg2ft_body.stl" scale="0.001 0.001 0.001"/> -->
+              <box size="0.118 0.07 0.05"/>
+            </geometry>
+        </collision>
+
+        <!-- cable protect -->
+        <collision>
+          <origin rpy="1.57 0 0" xyz="0.008 0.04 -0.034"/>
+            <geometry>
+              <cylinder length="0.03" radius="0.005"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- left finger -->
+
+    <joint name="body_left_finger_joint" type="revolute">
+        <!-- <origin rpy="0 0 -0.78539" xyz="0.0 0.1 0"/> -->
+        <origin rpy="0 0 0" xyz="0.05 0.03 0"/>
+        <parent link="rg2ft_body_link" />
+        <child link = "left_finger_link" />
+        <axis xyz="0 0 1" />
+        <limit lower="-1.0" upper="1.0" effort="330.0" velocity="3.14"/>
+        <!-- <dynamics friction="0.1"/> -->
+        <dynamics damping="0.02" friction="0.1" />
+    </joint>
+
+    <link name="left_finger_link">
+        <inertial>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <!-- <inertia ixx="0.00001079999568" ixy="0.0" ixz="0.0" iyy="0.00004379998248" iyz="0.0" izz="0.00004379998248"/> -->
+            <mass value="0.072"/>
+        </inertial>
+        <gravity>1</gravity>
+        <visual>
+            <origin rpy="1.57 0 1.57" xyz="-0.05 -0.03 0"/>
+            <geometry>
+                <mesh filename="package://onrobot_description/meshes/rg2ft_left_finger.stl" scale="0.001 0.001 0.001"/>
+                <!-- <box size="0.1 0.3 0.1"/> -->
+            </geometry>
+            <material name="LightGrey">
+              <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0.8" xyz="0.03 0 -0.01"/>
+            <geometry>
+                <!-- <mesh filename="package://onrobot_description/meshes/rg2ft_left_finger.stl" scale="0.001 0.001 0.001"/> -->
+                <box size="0.08 0.03 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="left_finger_tip_joint" type="revolute">
+        <!-- <origin rpy="0 0 -0.78539" xyz="0 0.3 0"/> -->
+        <origin rpy="1.57 0 1.57" xyz="0.056 0.022 0"/>
+        <parent link="left_finger_link" />
+        <child link = "left_finger_tip_link" />
+        <!-- <axis xyz="0 0 1" /> -->
+        <axis xyz="0 1 0" />
+        <limit lower="-1.0" upper="1.0" effort="330.0" velocity="3.14"/>
+        <!-- <limit lower="-1.0" upper="1.0" effort="3.0" velocity="3.14"/> -->
+        <dynamics friction="0.1"/>
+    </joint>
+
+    <link name="left_finger_tip_link">
+        <inertial>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <!-- <inertia ixx="0.00000285991179" ixy="0.0" ixz="0.0" iyy="0.00000285991179" iyz="0.0" izz="0.000003864747209"/> -->
+            <mass value="0.03435330852"/>
+        </inertial>
+        <gravity>1</gravity>
+        <visual>
+            <origin rpy="0 0 0" xyz="-0.05 0 -0.105"/>
+            <geometry>
+                <mesh filename="package://onrobot_description/meshes/rg2ft_left_sensor.stl" scale="0.001 0.001 0.001"/>
+                <!-- <box size="0.1 0.2 0.1"/> -->
+            </geometry>
+            <material name="LightGrey">
+              <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <!-- <origin rpy="0 0 0" xyz="-0.05 0 -0.105"/> -->
+            <origin rpy="0 1.57 0" xyz="-0.003 -0.009 0.028"/>
+            <geometry>
+                <!-- <mesh filename="package://onrobot_description/meshes/rg2ft_left_sensor.stl" scale="0.001 0.001 0.001"/> -->
+                <cylinder length="0.018" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- right finger -->
+
+    <joint name="body_right_finger_joint" type="revolute">
+        <!-- <origin rpy="0 0 0" xyz="0.05 0.03 0"/> *** left -->
+        <origin rpy="0 0 0" xyz="0.05 -0.03 0"/>
+        <parent link="rg2ft_body_link" />
+        <child link = "right_finger_link" />
+        <axis xyz="0 0 1"/>
+        <limit lower="-1.0" upper="1.0" effort="330.0" velocity="3.14"/>
+        <!-- <limit lower="-1.0" upper="1.0" effort="3.0" velocity="3.14"/> -->
+        <!-- <mimic joint="body_left_finger_joint" multiplier="-1" offset="0" /> -->
+        <dynamics damping="0.02" friction="0.1"/>
+        <!-- <dynamics damping="0.02" friction="0.1" /> -->
+    </joint>
+
+    <link name="right_finger_link">
+        <inertial>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <!-- <inertia ixx="0.00001079999568" ixy="0.0" ixz="0.0" iyy="0.00004379998248" iyz="0.0" izz="0.00004379998248"/> -->
+            <mass value="0.072"/>
+        </inertial>
+        <gravity>1</gravity>
+        <visual>
+            <origin rpy="1.57 0 1.57" xyz="-0.05 0.03 0"/>
+            <geometry>
+                <mesh filename="package://onrobot_description/meshes/rg2ft_right_finger.stl" scale="0.001 0.001 0.001"/>
+                <!-- <box size="0.1 0.3 0.1"/> -->
+            </geometry>
+            <material name="LightGrey">
+              <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 -0.8" xyz="0.03 0 -0.01"/>
+            <geometry>
+                <box size="0.08 0.03 0.03"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="right_finger_tip_joint" type="revolute">
+      <origin rpy="1.57 0 1.57" xyz="0.056 -0.022 0"/>
+
+        <parent link="right_finger_link" />
+        <child link = "right_finger_tip_link" />
+        <axis xyz="0 1 0"/>
+        <limit lower="-1.0" upper="1.0" effort="330.0" velocity="3.14"/>
+        <!-- <limit lower="-1.0" upper="1.0" effort="3.0" velocity="3.14"/> -->
+        <!-- <mimic joint="body_left_finger_joint" multiplier="-1" offset="0" /> -->
+        <dynamics friction="0.1"/>
+    </joint>
+
+    <link name="right_finger_tip_link">
+        <inertial>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            <!-- <inertia ixx="0.00000285991179" ixy="0.0" ixz="0.0" iyy="0.00000285991179" iyz="0.0" izz="0.000003864747209"/> -->
+            <mass value="0.03435330852"/>
+        </inertial>
+        <gravity>1</gravity>
+        <visual>
+            <origin rpy="0 0 0" xyz="0.05 0 -0.105"/>
+            <geometry>
+                <mesh filename="package://onrobot_description/meshes/rg2ft_right_sensor.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="LightGrey">
+              <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 1.57 0" xyz="0.003 -0.009 0.028"/>
+            <geometry>
+                <!-- <mesh filename="package://onrobot/meshes/rg2ft_right_sensor.stl" scale="0.001 0.001 0.001"/> -->
+                <cylinder length="0.018" radius="0.015"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- end effector -->
+
+    <joint name="rg2ft_eef_joint" type="fixed">
+      <!-- <origin rpy="0 0 0" xyz="0.195 0.0 0.0"/> -->
+      <origin rpy="0 0 0" xyz="0.195 0.0 0.0"/>
+      <parent link="rg2ft_body_link"/>
+      <child link="rg2ft_eef_link"/>
+    </joint>
+
+    <link name="rg2ft_eef_link"/>
+
+    <!-- transmission -->
+
+    <!-- <xacro:rg2ft_transmission prefix="" /> -->
+    <transmission name="body_left_finger_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="body_left_finger_joint">
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="body_left_finger_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="body_right_finger_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="body_right_finger_joint">
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="body_right_finger_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="left_finger_tip_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="left_finger_tip_joint">
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="left_finger_tip_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="right_finger_tip_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="right_finger_tip_joint">
+        <!-- <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface> -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="right_finger_tip_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+  </xacro:macro>
+
+</robot>

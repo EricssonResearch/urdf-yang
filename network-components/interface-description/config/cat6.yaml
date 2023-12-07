@@ -1,0 +1,13 @@
+wired-connection:
+  latency: 2
+  bandwidth: 10000
+  jitter: 5
+  packet-loss: 0.005
+  reliability: 0.98
+  availability: 0.99
+  qos-level: high
+  energy-efficiency: medium
+  compatibility: fully-compatible
+  cost: 50
+  scalability: high
+  security-level: medium

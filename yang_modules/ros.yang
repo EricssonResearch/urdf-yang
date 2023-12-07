@@ -1,0 +1,152 @@
+module ros {
+    yang-version 1.1;
+    namespace "urn:ros";
+    prefix "ros";
+    
+    import network {
+        prefix "nw";
+        revision-date 2023-07-06;
+    }
+
+    import network-topology {
+        prefix "nt";
+        revision-date 2023-04-20;
+    }
+
+    revision 2023-04-26 {
+        description
+            "This module defines a model for ROS node level networking.";
+        reference
+            "RFC XXXX: A YANG Data Model for ROS Network";
+    }
+
+    typedef ros-node-type {
+        description "ROS node type.";
+        type enumeration {
+            enum node;
+            enum topic;
+        }
+    }
+    grouping ros-node-graph-type {
+        description "Identifies the topology type to be L1.";
+        container ros-node-graph {
+            presence "indicates ROS node graph";
+            description
+                "The presence of the container node indicates ROS node graph level";
+        }
+    }
+
+    grouping ros-node-graph-attributes {
+        description "Topology scope attributes";
+        container ros-node-graph-attributes {
+            description "Contains ROS node graph attributes";
+            leaf name {
+                type string;
+                description
+                    "Name of the ROS node graph";
+            }
+        }
+    }
+
+    grouping ros-node-attributes {
+        description "ROS node scope attributes";
+        container ros-node-attributes {
+            description
+                "Contains ROS node/topic attributes";
+            leaf ros-node-type {
+                type enumeration {
+                    enum node;
+                    enum topic;
+                }
+                description
+                    "Type of ROS graph node. E.g., node, topic";
+            }
+            choice type {
+                case topic {
+                    leaf topic-type {
+                        type string;
+                        description "ROS topic name";
+                    }
+                }
+            }
+        }
+    }
+
+    grouping ros-link-attributes {
+        description
+        "ROS node graph link scope attributes";
+        container ros-link-attributes {
+            description
+                "Contains link attributes";
+            leaf name {
+                type string;
+                description
+                    "Link Name";
+            }
+        }
+    }
+
+    grouping ros-termination-point-attributes {
+        description "ROS termination point scope attributes";
+        container ros-termination-point-attributes {
+            description
+                "Contains termination point attributes";
+            leaf name {
+                type string;
+                description
+                    "Name of ROS TP";
+            }
+        }
+    }
+
+
+    augment "/nw:networks/nw:network/nw:network-types" {
+        description
+        "Introduces new network type for ROS node graph";
+        uses ros-node-graph-type;
+    }
+
+    augment "/nw:networks/nw:network" {
+        when "nw:network-types/ros:ros-node-graph" {
+            description
+                "Augmentation parameters apply only for networks with
+                ROS node graph type";
+        }
+        description
+            "ROS node graph";
+        uses ros-node-graph-attributes;
+    }
+
+    augment "/nw:networks/nw:network/nw:node" {
+        when "../nw:network-types/ros:ros-node-graph" {
+        description
+            "Augmentation parameters apply only for networks with
+            ROS node graph type";
+        }
+        description
+            "ROS node graph attributes ";
+        uses ros-node-attributes;
+    }
+
+    augment "/nw:networks/nw:network/nt:link" {
+        when "../nw:network-types/ros:ros-node-graph" {
+            description
+                "Augmentation parameters apply only for networks with
+                ROS node graph type";
+        }
+        description
+            "Augments topology link attributes";
+        uses ros-link-attributes;
+    }
+
+    augment "/nw:networks/nw:network/nw:node/"
+         +"nt:termination-point" {
+        when "../../nw:network-types/ros:ros-node-graph" {
+            description
+                "Augmentation parameters apply only for networks with
+                ROS node grapg type";
+        }
+        description "Augments topology termination point configuration";
+        uses ros-termination-point-attributes;
+    }
+}

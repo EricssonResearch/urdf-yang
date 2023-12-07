@@ -1,0 +1,7 @@
+[submodule "Universal_Robots_ROS2_Description_nw_arch"]
+	path = Universal_Robots_ROS2_Description_nw_arch
+	url = https://github.com/Martzi/Universal_Robots_ROS2_Description_nw_arch.git
+	branch = humble
+[submodule "realsense-ros-nw_arch"]
+	path = realsense-ros-nw_arch
+	url = https://github.com/Martzi/realsense-ros-nw_arch.git

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="wifi5">
+
+    <xacro:property name="wifi5_yaml_file" value="$(find interface-description)/config/wifi5.yaml" />
+    <xacro:property name="wifi5_props" value="${xacro.load_yaml(wifi5_yaml_file)}"/>
+    <xacro:property name="wifi5_length" value="${wifi5_props['wireless-connection']['length']}"/>
+    <xacro:property name="wifi5_bandwidth" value="${wifi5_props['wireless-connection']['bandwidth']}"/>
+    <xacro:property name="wifi5_jitter" value="${wifi5_props['wireless-connection']['jitter']}"/>
+    <xacro:property name="wifi5_packet_loss" value="${wifi5_props['wireless-connection']['packet-loss']}"/>
+    <xacro:property name="wifi5_reliability" value="${wifi5_props['wireless-connection']['reliability']}"/>
+    <xacro:property name="wifi5_availability" value="${wifi5_props['wireless-connection']['availability']}"/>
+    <xacro:property name="wifi5_throughput" value="${wifi5_props['wireless-connection']['throughput']}"/>
+    <xacro:property name="wifi5_qos_level" value="${wifi5_props['wireless-connection']['qos-level']}"/>
+    <xacro:property name="wifi5_energy_efficiency" value="${wifi5_props['wireless-connection']['energy-efficiency']}"/>
+    <xacro:property name="wifi5_compatibility" value="${wifi5_props['wireless-connection']['compatibility']}"/>
+    <xacro:property name="wifi5_cost" value="${wifi5_props['wireless-connection']['cost']}"/>
+    <xacro:property name="wifi5_scalability" value="${wifi5_props['wireless-connection']['scalability']}"/>
+    <xacro:property name="wifi5_security_level" value="${wifi5_props['wireless-connection']['security-level']}"/>
+
+
+    <xacro:macro name="wifi5_L1" params="id">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:intertface-type>wifi5</l1t:intertface-type>
+            </l1t:l1-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="wifi5_L2" params="id supporting_network supporting_node supporting_tp">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <nt:supporting-termination-point>
+                <nt:network-ref>${supporting_network}</nt:network-ref>
+                <nt:node-ref>${supporting_node}</nt:node-ref>
+                <nt:tp-ref>${supporting_tp}</nt:tp-ref>
+            </nt:supporting-termination-point>
+            <l2t:l2-termination-point-attributes>
+                <l2t:bandwidth>${wifi5_bandwidth}</l2t:bandwidth>
+                <l2t:jitter>${wifi5_jitter}</l2t:jitter>
+            </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+</robot>

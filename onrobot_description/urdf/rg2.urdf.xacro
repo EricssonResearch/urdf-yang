@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!-- xacro for rg2 mounted on the manipulator -->
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:template:template-network"
+       xmlns:nt="urn:template:template-network-topology"
+       xmlns:l1t="urn:template:template-l1"
+       xmlns:l2t="urn:template:template-l2"
+       name="RG2FT_computebox">
+  <xacro:include filename="../../interface-description/urdf/usb20.urdf.xacro"/>
+  <xacro:include filename="../../interface-description/urdf/cat5e.urdf.xacro"/>
+  
+  <xacro:macro name="rg2" params="prefix L1_id L2_id L1_network_id L2_network_id">
+
+    <!-- rg2 joint -->
+    <joint name="rg2_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0.038 0 0"/>
+      <parent link="${prefix}gripper_extender_link"/>
+      <child link="${prefix}rg2_body_link"/>
+    </joint>
+    <link name="${prefix}rg2_body_link">
+      <visual>
+        <origin rpy="0 ${M_PI/2} 0" xyz="0.051 0.0085 0.0015"/>
+        <geometry>
+          <mesh filename="package://onrobot_description/meshes/dae_rg2_.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="White">
+          <color rgba="1.0 1.0 1.0 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 ${M_PI/2} 0" xyz="0.051 0.0085 0.0015"/>
+        <geometry>
+          <mesh filename="package://onrobot_description/meshes/rg2_.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1"/>
+        <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+      </inertial>
+    </link>
+
+    <joint name="rg2_eef_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0.195 0.0 0.0"/>
+      <parent link="rg2_body_link"/>
+      <child link="rg2_eef_link"/>
+    </joint>
+    <link name="rg2_eef_link"/>
+
+    <yang>
+        <!-- L2 network topology -->
+        <nw:network>
+            <nw:network-id>${L2_network_id}</nw:network-id>
+            <nw:network-types>
+                <l2t:l2-topology/>
+            </nw:network-types>
+            <nw:supporting-network>
+                <nw:network-ref>${L1_network_id}</nw:network-ref>
+            </nw:supporting-network>
+            <nw:node>
+                <nw:node-id>${L2_id}</nw:node-id>
+                <nw:supporting-node>
+                    <nw:network-ref>${L1_network_id}</nw:network-ref>
+                    <nw:node-ref>${L1_id}</nw:node-ref>
+                </nw:supporting-node>
+                <xacro:cat5e_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                <xacro:usb20_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
+            </nw:node>
+        </nw:network>
+
+        <!-- Physical network topology -->
+        <nw:network>
+            <nw:network-id>${L1_network_id}</nw:network-id>
+            <nw:network-types>
+                <l1t:l1-topology/>
+            </nw:network-types>
+            <nw:node>
+                <nw:node-id>${L1_id}</nw:node-id>
+                <l1t:l1-node-attributes>
+                    <l1t:device-type>gripper</l1t:device-type>
+                </l1t:l1-node-attributes>
+                <xacro:cat5e_L1 id="eth-cat5e_1"/>
+                <xacro:usb20_L1 id="usb_1"/>
+            </nw:node>
+        </nw:network>
+    </yang>
+  </xacro:macro>
+</robot>

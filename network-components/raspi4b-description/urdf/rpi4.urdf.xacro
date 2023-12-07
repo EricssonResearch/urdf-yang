@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="rpi4">
+
+    <xacro:include filename="$(find interface-description)/urdf/usb30.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/usb20.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/cat5e.urdf.xacro"/>
+
+    <xacro:macro name="rpi4" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=RPi_L2 L1_id:=RPi_L1">
+        <yang>
+            <!-- L2 network topology -->
+            <nw:network>
+                <nw:network-id>${L2_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l2t:l2-topology/>
+                </nw:network-types>
+                <nw:supporting-network>
+                    <nw:network-ref>${L1_network_id}</nw:network-ref>
+                </nw:supporting-network>
+                <nw:node>
+                    <nw:node-id>${L2_id}</nw:node-id>
+                    <nw:supporting-node>
+                        <nw:network-ref>${L1_network_id}</nw:network-ref>
+                        <nw:node-ref>${L1_id}</nw:node-ref>
+                    </nw:supporting-node>
+                    <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
+                    <xacro:cat5e_L2 id="eth-cat5e_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth-cat5-1"/>
+                </nw:node>
+            </nw:network>
+
+            <!-- Physical network topology -->
+            <nw:network>
+                <nw:network-id>${L1_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l1t:l1-topology/>
+                </nw:network-types>
+                <nw:node>
+                    <nw:node-id>${L1_id}</nw:node-id>
+                    <l1t:l1-node-attributes>
+                        <l1t:device-type>rpi4</l1t:device-type>
+                    </l1t:l1-node-attributes>
+                    <xacro:usb30_L1 id="usb_1"/>
+                    <xacro:cat5e_L1 id="eth-cat5e_1"/>
+                </nw:node>
+            </nw:network>
+        </yang>
+    </xacro:macro>
+</robot>

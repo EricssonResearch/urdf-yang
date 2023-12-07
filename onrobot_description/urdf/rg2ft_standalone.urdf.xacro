@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- xacro rg2ft mounted on the manipulator -->
+
+<robot name="rg2ft" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find onrobot_gazebo)/urdf/common.gazebo.xacro" />
+
+  <!-- rg2ft gripper -->
+  <xacro:include filename="$(find onrobot_description)/urdf/rg2ft.urdf.xacro" />
+  
+  <!-- rg2ft pipe -->
+  <xacro:rg2ft parent="world"/>
+
+  <!-- world will be root link-->
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "rg2ft_body_link" />
+    <!-- <origin xyz="0.0 0.0 0.735" rpy="0.0 0.0 -1.57" /> -->
+    <origin xyz="0.0 0.0 1.11" rpy="0.0 0.0 3.14159265359" />
+  </joint>
+
+</robot>

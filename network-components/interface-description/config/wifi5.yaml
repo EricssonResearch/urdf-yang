@@ -1,0 +1,13 @@
+wireless-connection:
+  latency: 10
+  bandwidth: 3500
+  jitter: 15
+  packet-loss: 0.02
+  reliability: 0.95
+  availability: 0.98
+  qos-level: medium
+  energy-efficiency: medium
+  compatibility: partially-compatible
+  cost: 20
+  scalability: medium
+  security-level: medium

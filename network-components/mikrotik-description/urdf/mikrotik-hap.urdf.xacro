@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="mikrotik_hap">
+    <xacro:include filename="$(find interface-description)/urdf/wifi5.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/wifi4.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
+
+    <xacro:macro name="mikrotik_hap" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L1_id:=Mikrotik_HAP_L1 L2_id:=Mikrotik_HAP_L2">
+        <yang>
+            <!-- L2 network topology -->
+            <nw:network>
+                <nw:network-id>${L2_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l2t:l2-topology/>
+                </nw:network-types>
+                <nw:supporting-network>
+                    <nw:network-ref>${L1_network_id}</nw:network-ref>
+                </nw:supporting-network>
+                <nw:node>
+                    <nw:node-id>${L2_id}</nw:node-id>
+                    <nw:supporting-node>
+                        <nw:network-ref>${L1_network_id}</nw:network-ref>
+                        <nw:node-ref>${L1_id}</nw:node-ref>
+                    </nw:supporting-node>
+                    <xacro:cat6_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                    <xacro:cat6_L2 id="eth_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_2"/>
+                    <xacro:cat6_L2 id="eth_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_3"/>
+                    <xacro:cat6_L2 id="eth_4" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_4"/>
+                    <xacro:cat6_L2 id="eth_5" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_5"/>
+                    <xacro:wifi5_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
+                    <xacro:wifi4_L2 id="wireless_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_2"/>
+                </nw:node>
+            </nw:network>
+
+            <!-- Physical network topology -->
+            <nw:network>
+                <nw:network-id>${L1_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l1t:l1-topology/>
+                </nw:network-types>
+                <nw:node>
+                    <nw:node-id>${L1_id}</nw:node-id>
+                    <l1t:l1-node-attributes>
+                        <l1t:device-type>router</l1t:device-type>
+                    </l1t:l1-node-attributes>
+                    <xacro:cat6_L1 id="eth_1"/>
+                    <xacro:cat6_L1 id="eth_2"/>
+                    <xacro:cat6_L1 id="eth_3"/>
+                    <xacro:cat6_L1 id="eth_4"/>
+                    <xacro:cat6_L1 id="eth_5"/>
+                    <xacro:wifi5_L1 id="wireless_1"/>
+                    <xacro:wifi4_L1 id="wireless_2"/>
+                </nw:node>
+            </nw:network>
+        </yang>
+    </xacro:macro>
+</robot>

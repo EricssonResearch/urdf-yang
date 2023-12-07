@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="nuc">
+   
+    <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/usb30.urdf.xacro"/>
+    <xacro:include filename="$(find interface-description)/urdf/wifi5.urdf.xacro"/>
+
+    <xacro:macro name="nuc" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=NUC_L2 L1_id:=NUC_L1">
+    <!-- <xacro:macro name="nuc" params="parent L1_id L2_id L1_network_id L2_network_id"> -->
+
+        <joint name="nuc_joint" type="fixed">
+            <origin xyz="-1 1 0" rpy="0 0 0" />
+            <parent link="${parent}"/>
+            <child link="nuc_link"/>
+        </joint>
+
+        <link name="nuc_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                <mesh filename="package://nuc_description/meshes/intel_nuc.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://nuc_description/meshes/intel_nuc.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <yang>
+            <!-- L2 network topology -->
+            <nw:network>
+                <nw:network-id>${L2_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l2t:l2-topology/>
+                </nw:network-types>
+                <nw:supporting-network>
+                    <nw:network-ref>${L1_network_id}</nw:network-ref>
+                </nw:supporting-network>
+                <nw:node>
+                    <nw:node-id>${L2_id}</nw:node-id>
+                    <nw:supporting-node>
+                        <nw:network-ref>${L2_id}</nw:network-ref>
+                        <nw:node-ref>${L1_id}</nw:node-ref>
+                    </nw:supporting-node>
+                    <xacro:usb30_L2 id="usb_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
+                    <xacro:cat6_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                    <xacro:wifi5_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
+                </nw:node>
+            </nw:network>
+
+            <!-- Physical network topology -->
+            <nw:network>
+                <nw:network-id>${L1_network_id}</nw:network-id>
+                <nw:network-types>
+                    <l1t:l1-topology/>
+                </nw:network-types>
+                <nw:node>
+                    <nw:node-id>${L1_id}</nw:node-id>
+                    <l1t:l1-node-attributes>
+                        <l1t:device-type>pc</l1t:device-type>
+                    </l1t:l1-node-attributes>
+                    <xacro:usb30_L1 id="usb_1"/>
+                    <xacro:cat6_L1 id="eth_1"/>
+                    <xacro:wifi5_L1 id="wireless_1"/>
+                </nw:node>
+            </nw:network>
+        </yang>
+    </xacro:macro>
+</robot>

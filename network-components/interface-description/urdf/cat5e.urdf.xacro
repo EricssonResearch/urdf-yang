@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="cat5e">
+
+    <xacro:property name="cat5e_yaml_file" value="$(find interface-description)/config/cat5e.yaml" />
+    <xacro:property name="cat5e_props" value="${xacro.load_yaml(cat5e_yaml_file)}"/>
+    <xacro:property name="cat5e_length" value="${cat5e_props['wired-connection']['length']}"/>
+    <xacro:property name="cat5e_bandwidth" value="${cat5e_props['wired-connection']['bandwidth']}"/>
+    <xacro:property name="cat5e_jitter" value="${cat5e_props['wired-connection']['jitter']}"/>
+    <xacro:property name="cat5e_packet_loss" value="${cat5e_props['wired-connection']['packet-loss']}"/>
+    <xacro:property name="cat5e_reliability" value="${cat5e_props['wired-connection']['reliability']}"/>
+    <xacro:property name="cat5e_availability" value="${cat5e_props['wired-connection']['availability']}"/>
+    <xacro:property name="cat5e_throughput" value="${cat5e_props['wired-connection']['throughput']}"/>
+    <xacro:property name="cat5e_qos_level" value="${cat5e_props['wired-connection']['qos-level']}"/>
+    <xacro:property name="cat5e_energy_efficiency" value="${cat5e_props['wired-connection']['energy-efficiency']}"/>
+    <xacro:property name="cat5e_compatibility" value="${cat5e_props['wired-connection']['compatibility']}"/>
+    <xacro:property name="cat5e_cost" value="${cat5e_props['wired-connection']['cost']}"/>
+    <xacro:property name="cat5e_scalability" value="${cat5e_props['wired-connection']['scalability']}"/>
+    <xacro:property name="cat5e_security_level" value="${cat5e_props['wired-connection']['security-level']}"/>
+
+
+    <xacro:macro name="cat5e_L1" params="id">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:intertface-type>cat5e</l1t:intertface-type>
+            </l1t:l1-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="cat5e_L2" params="id supporting_network supporting_node supporting_tp">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <nt:supporting-termination-point>
+                <nt:network-ref>${supporting_network}</nt:network-ref>
+                <nt:node-ref>${supporting_node}</nt:node-ref>
+                <nt:tp-ref>${supporting_tp}</nt:tp-ref>
+            </nt:supporting-termination-point>
+            <l2t:l2-termination-point-attributes>
+                <l2t:bandwidth>${cat5e_bandwidth}</l2t:bandwidth>
+                <l2t:jitter>${cat5e_jitter}</l2t:jitter>
+            </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+</robot>

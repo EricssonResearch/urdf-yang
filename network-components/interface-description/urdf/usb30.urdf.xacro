@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:nw="urn:network"
+       xmlns:nt="urn:network-topology"
+       xmlns:l1t="urn:layer1"
+       xmlns:l2t="urn:layer2"
+       name="usb30">
+
+    <xacro:property name="usb30_yaml_file" value="$(find interface-description)/config/usb30.yaml" />
+    <xacro:property name="usb30_props" value="${xacro.load_yaml(usb30_yaml_file)}"/>
+    <xacro:property name="usb30_length" value="${usb30_props['wired-connection']['length']}"/>
+    <xacro:property name="usb30_bandwidth" value="${usb30_props['wired-connection']['bandwidth']}"/>
+    <xacro:property name="usb30_jitter" value="${usb30_props['wired-connection']['jitter']}"/>
+    <xacro:property name="usb30_packet_loss" value="${usb30_props['wired-connection']['packet-loss']}"/>
+    <xacro:property name="usb30_reliability" value="${usb30_props['wired-connection']['reliability']}"/>
+    <xacro:property name="usb30_availability" value="${usb30_props['wired-connection']['availability']}"/>
+    <xacro:property name="usb30_throughput" value="${usb30_props['wired-connection']['throughput']}"/>
+    <xacro:property name="usb30_qos_level" value="${usb30_props['wired-connection']['qos-level']}"/>
+    <xacro:property name="usb30_energy_efficiency" value="${usb30_props['wired-connection']['energy-efficiency']}"/>
+    <xacro:property name="usb30_compatibility" value="${usb30_props['wired-connection']['compatibility']}"/>
+    <xacro:property name="usb30_cost" value="${usb30_props['wired-connection']['cost']}"/>
+    <xacro:property name="usb30_scalability" value="${usb30_props['wired-connection']['scalability']}"/>
+    <xacro:property name="usb30_security_level" value="${usb30_props['wired-connection']['security-level']}"/>
+
+
+    <xacro:macro name="usb30_L1" params="id">
+
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:interface-type>usb30</l1t:interface-type>
+            </l1t:l1-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="usb30_L2" params="id supporting_network supporting_node supporting_tp">
+
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <nt:supporting-termination-point>
+                <nt:network-ref>${supporting_network}</nt:network-ref>
+                <nt:node-ref>${supporting_node}</nt:node-ref>
+                <nt:tp-ref>${supporting_tp}</nt:tp-ref>
+            </nt:supporting-termination-point>
+            <l2t:l2-termination-point-attributes>
+                <l2t:bandwidth>${usb30_bandwidth}</l2t:bandwidth>
+                <l2t:jitter>${usb30_jitter}</l2t:jitter>
+            </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+</robot>
