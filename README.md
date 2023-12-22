@@ -50,4 +50,4 @@ Desired output:
 
 # Related Publication:
 
-- M. Balogh, B. Kovács, A. Vidács, and G. Szabó, “Towards a connected robotic ecosystem,” in 2023 IEEE Conference on Standards for Communications and Networking (CSCN), 2023
+- M. Balogh, B. Kovács, A. Vidács, and G. Szabó, “Towards a connected robotic ecosystem,” in 2023 IEEE Conference on Standards for Communications and Networking (CSCN), 2023 [/Read Here!/](https://drive.google.com/file/d/1BM2U6pxrC8BdjCZnLkcvHCE5idf1rcdk/view?usp=sharing)
