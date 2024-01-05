@@ -13,7 +13,7 @@ This repository hosts the robot description files for the following components:
 
 The listed model files have been extended with network topology information.
 
-# Required packages:
+# Required packages
 
 - Intel RealSense SDK >= 2.54
 - `sudo apt-get install ros-humble-librealsense2 ros-humble-diagnostic-updater ros-humble-xacro ros-humble-joint-state-publisher-gui ros-humble-joint-state-broadcaster`
@@ -36,7 +36,7 @@ The listed model files have been extended with network topology information.
 - Source workspace:
 - `. install/setup.bash`
 
-## Visualizing system:
+## Visualizing system
 
 - `ros2 launch system_description system_launcher.launch`
 
@@ -44,10 +44,14 @@ Desired output:
 
 ![](desired_output.png)
 
-## Extracting URDF:
+## Extracting URDF
 
 - `ros2 param get /robot_state_publisher robot_description > robot_system_model.urdf`
 
-# Related Publication:
+# Related Publication
 
 - M. Balogh, B. Kovács, A. Vidács, and G. Szabó, “Towards a connected robotic ecosystem,” in 2023 IEEE Conference on Standards for Communications and Networking (CSCN), 2023 [/Read Here!/](https://drive.google.com/file/d/1BM2U6pxrC8BdjCZnLkcvHCE5idf1rcdk/view?usp=sharing)
+
+# Demonstration
+
+[![Extending robot components with connectivity features](https://img.youtube.com/vi/lF3HMBzpvMY/0.jpg)](https://www.youtube.com/watch?v=lF3HMBzpvMY)
