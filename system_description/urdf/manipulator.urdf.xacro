@@ -11,10 +11,10 @@
   <xacro:include filename="$(find ur_description)/urdf/ur.urdf.xacro" ur_type="ur3e" />
 
   <!-- camera holder for d455 -->
-  <xacro:include filename="$(find erik_description)/urdf/simple_camera_holder_new.urdf.xacro" />
+  <xacro:include filename="$(find system_description)/urdf/simple_camera_holder_new.urdf.xacro" />
   
   <!-- gripper bracket -->
-  <xacro:include filename="$(find erik_description)/urdf/gripper_bracket.urdf.xacro" />
+  <xacro:include filename="$(find system_description)/urdf/gripper_bracket.urdf.xacro" />
 
   <!-- intel realsense camera  -->
   <xacro:include filename="$(find realsense2_description)/urdf/_d455.urdf.xacro" />
