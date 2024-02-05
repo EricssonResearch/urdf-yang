@@ -1,0 +1,144 @@
+module robot-control-loop {
+  yang-version 1.1;
+  namespace "urn:robot-control-loop";
+  prefix "rcl";
+
+  import ietf-inet-types {
+    prefix "inet";
+  }
+
+  import robot-network {
+    prefix "nw";
+  }
+
+  // General control loop parameters applicable to all robotic use-cases
+  container control-loops {
+    description "Control loop description for networked robot system";
+    list control-loop {
+      
+      key "control-loop-id";
+      leaf control-loop-id {
+        type uint32;
+        description
+          "Identifier for the control loop";
+      }
+      leaf containing-link-ids {
+        type string;
+        description
+          "Comma-separated list of containing link IDs";
+      }
+      leaf latency { 
+        type uint32; 
+        description "Latency requirement for the control loop"; 
+      }
+      leaf cycle-time { 
+        type uint32; 
+        description "Time taken to complete one control loop cycle";
+      }
+      leaf frequency { 
+        type uint32; 
+        description "Time taken to complete one control loop cycle";
+      }
+      leaf accuracy { 
+        type decimal64{
+          fraction-digits 2;
+        } 
+        description "Degree of accuracy required for control loop operations"; 
+      }
+      leaf payload-capacity { 
+        type uint32; 
+        description "Maximum payload capacity for the robot"; 
+      }
+      leaf reach { 
+        type uint32; 
+        description "Maximum reach or operational distance of the robot"; 
+      }
+      leaf end-effector-type { 
+        type string; 
+        description "Type of end-effector attached to the robot"; 
+      }
+      leaf safety-features { 
+        type boolean; 
+        description "Whether the robot includes advanced safety features"; 
+      }
+      
+      leaf maintenance-requirements { 
+        type enumeration {
+          enum "low" {
+            description "Low maintenance requirements"; 
+          }
+          enum "medium" { 
+            description "Medium maintenance requirements"; 
+          }
+          enum "high" { 
+            description "High maintenance requirements"; 
+          }
+        }
+        description "Level of maintenance required for the robot"; 
+      }
+      
+      leaf environment {
+        type string;
+        description "Environmental conditions for the robot (e.g., cleanroom, foundry)";
+      }
+      
+      leaf safety-standard-compliance {
+        type enumeration {
+          enum "ISO10218" { 
+            description "Compliance with ISO 10218 safety standard"; 
+          }
+          enum "ANSIR15.06" { 
+            description "Compliance with ANSI/RIA R15.06 safety standard"; 
+          }
+        }
+        description "Safety standard compliance for the robot"; 
+      }
+
+    // Communication and networking parameters
+    // container communication {
+    //   description "Communication and networking parameters for the control loop";
+      
+    //   leaf data-rate { 
+    //     type uint32; 
+    //     description "Data transmission rate for communication"; 
+    //   }
+      
+    //   leaf communication-protocol { 
+    //     type string; 
+    //     description "Communication protocol used for control loop"; 
+    //   }
+      
+    //   leaf network-reliability { 
+    //     type enumeration { 
+    //       enum "low"; 
+    //       enum "medium"; 
+    //       enum "high"; 
+    //     } 
+    //     description "Network reliability requirement"; 
+    //   }
+    //   leaf real-time-capability { 
+    //     type boolean; 
+    //     description "Whether the communication network must support real-time capabilities"; 
+    //   }
+    //   leaf bandwidth { 
+    //     type uint32; 
+    //     description "Bandwidth requirement for communication"; 
+    //   }
+    //   leaf jitter { 
+    //     type uint32; 
+    //     description "Jitter requirement for communication"; 
+    //   }
+    //   leaf security-level { 
+    //     type string; 
+    //     description "Security level required for communication"; 
+    //   }
+    //   leaf connection-type { 
+    //     type enumeration { 
+    //       enum "wired"; 
+    //       enum "wireless"; 
+    //     } 
+    //     description "Type of connection (wired or wireless)";
+    //   }
+    }
+  }
+}
