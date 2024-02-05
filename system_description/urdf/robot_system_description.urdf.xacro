@@ -3,16 +3,22 @@
    xmlns:xacro="http://wiki.ros.org/xacro" 
    xmlns:ros="urn:ros"
    xmlns:nw="urn:network"
-   xmlns:nt="urn:network-topology">
+   xmlns:nt="urn:network-topology"
+   xmlns:l1t="urn:layer1"
+   xmlns:l2t="urn:layer2"
+   xmlns:rcl="urn:robot-control-loop">
+
+   <xacro:property name="L1_networkID" value="physical"/>
+   <xacro:property name="L2_networkID" value="layer2"/>
 
    <!-- robot name parameter -->
-   <xacro:arg name="name" default="ur"/>
+   <xacro:arg name="name" default="robot_system"/>
    <!-- import robot arm -->
    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
    <!-- import gripper bracket -->
-   <xacro:include filename="$(find erik_description)/urdf/gripper_bracket.urdf.xacro" />
+   <xacro:include filename="$(find system_description)/urdf/gripper_bracket.urdf.xacro" />
    <!-- import camera holder -->
-   <xacro:include filename="$(find erik_description)/urdf/camera_holder.urdf.xacro" />
+   <xacro:include filename="$(find system_description)/urdf/camera_holder.urdf.xacro" />
    <!-- import d455 camera -->
    <xacro:include filename="$(find realsense2_description)/urdf/_d455.urdf.xacro" />
    <!-- import rg2ft gripper -->
@@ -27,6 +33,10 @@
    <xacro:include filename="$(find nw-5g-modem_description)/urdf/nw-5g-modem.urdf.xacro" />
    <!-- import 5g radio dot -->
    <xacro:include filename="$(find radiodot_description)/urdf/radiodot.urdf.xacro" />
+   <!-- import device connections - topology skeleton -->
+   <xacro:include filename="$(find system_description)/urdf/connections.urdf.xacro" />
+
+   <xacro:include filename="$(find system_description)/urdf/closed_control_loop.urdf.xacro" />
 
    <!-- possible 'ur_type' values: ur3, ur3e, ur5, ur5e, ur10, ur10e, ur16e, ur20 -->
    <!-- the default value should raise an error in case this was called without defining the type -->
@@ -145,176 +155,44 @@
    <!-- link radiodot with world -->
    <xacro:radiodot parent="world"/>
 
-  <yang>
-  <xacro:macro name="system_instance" params="L2_network_id:=Data_Link">
-   <nw:network>
-     <nw:network-id name="ros"/>
-     <nw:network-types>
-       <ros:ros-node-graph/>
-     </nw:network-types>
-     <nw:supporting-network>
-       <nw:network-ref name="${L2_network_id}"/> <!-- ${L2_network_id}-->
-     </nw:supporting-network>
-   <!-- </nw:network> -->
+   <xacro:topology-link src_node="poe-switch" src_tp="eth_1" dst_node="mikrotik" dst_tp="eth_1" conn_type="wired"/>
+   <xacro:topology-link src_node="mikrotik" src_tp="eth_2" dst_node="rpi4" dst_tp="eth_1" conn_type="wired"/>
+   <xacro:topology-link src_node="realsense-d455i" src_tp="usb_1" dst_node="nuc" dst_tp="usb_1" conn_type="wired"/>
+   <xacro:topology-link src_node="nuc" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_2" conn_type="wired"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_3" conn_type="wired"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="prop_1" dst_node="rg2ft-gripper" dst_tp="prop_1" conn_type="wired"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_4" conn_type="wired"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="prop_1" dst_node="ur3e-arm" dst_tp="prop_1" conn_type="wired"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="usb_1" dst_node="rpi4" dst_tp="usb_1" conn_type="wired"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="wireless_1" dst_node="5g-dot" dst_tp="wireless_1" conn_type="wired"/>
+   <xacro:topology-link src_node="5g-dot" src_tp="eth_1" dst_node="flightrack" dst_tp="eth_1" conn_type="wired"/>
 
+   <xacro:closed-control-loop 
+      control_loop_id="1" 
+      containing_link_ids="ur3e-controlbox-ur3e-arm-link, ur3e-controlbox-poe-switch-link, nuc-poe-switch-link"
+      latency="2"
+      cycle_time="100"
+      frequency="500"
+      payload_capacity="3000"
+      reach="3"
+      end_effector_type="welding_tool"
+      safety_features="true"
+      maintenance_requirements="medium"
+      environment="cleanroom"
+      safety_standard_compliance="ISO10218"/>
 
-    <!-- ros2 node info /robot_state_publisher -->
-    <nw:node> <!-- robot-state-publiser ROS node -->
-      <nw:node-id name="robot-state-publisher" /> <!--(node-name)-->
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>node</ros:ros-node-type>
-      </ros:ros-node-attributes>  
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-
-    <nt:link> <!-- subscribes to  (link: subscribers_node-name)-->
-      <nt:link-id name="joint_states-robot-state-publisher" />
-      <nt:source>
-        <nt:source-node name="joint_states" />
-        <nt:source-tp>sub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node name="robot-state-publisher" />
-        <nt:dest-tp>sub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nt:link> <!-- publishes to (node-name-publishers_name)-->
-      <nt:link-id name="robot-state-publisher-tf" />
-      <nt:source>
-        <nt:source-node name="robot-state-publisher" />
-        <nt:source-tp>pub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node>tf</nt:dest-node>
-        <nt:dest-tp>pub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nt:link> <!-- publishes to (node-name-publishers_name)-->
-      <nt:link-id name="robot-state-publisher-tf_static" />
-      <nt:source>
-        <nt:source-node name="robot-state-publisher" />
-        <nt:source-tp>pub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node name="tf_static" />
-        <nt:dest-tp>pub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nt:link> <!-- publishes to (node-name-publishers_name)-->
-      <nt:link-id name="robot-state-publisher-robot_description" />
-      <nt:source>
-        <nt:source-node name="robot-state-publisher" />
-        <nt:source-tp>pub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node name="robot_description" />
-        <nt:dest-tp>pub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nw:node> <!-- /tf topic -->
-      <nw:node-id name="tf" /> <!-- ros topic tipusú yang node! -->
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>topic</ros:ros-node-type>
-        <ros:topic-type name="tf2_msgs/msg/TFMessage" hz="0" bw="0"/>
-      </ros:ros-node-attributes>
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-
-    <nw:node> <!-- /tf_static topic -->
-      <nw:node-id name="/tf_static" />
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>topic</ros:ros-node-type>
-        <ros:topic-type name="tf2_msgs/msg/TFMessage" hz="10" bw="11 KB/s"/>
-      </ros:ros-node-attributes>
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-
-    <nw:node> <!-- /robot_description topic -->
-      <nw:node-id name="/robot_description" /> 
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>topic</ros:ros-node-type>
-        <ros:topic-type name="std_msgs/msg/String" hz="0" bw="0"/>
-      </ros:ros-node-attributes>
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-
-    <nw:node> <!-- joint-state-publiser ROS node -->
-      <nw:node-id name="joint-state-publisher" /> <!--(node-name)-->
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>node</ros:ros-node-type>
-      </ros:ros-node-attributes>  
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-
-    <nt:link> <!-- subscribes to  (link: subscribers_node-name)-->
-      <nt:link-id name="robot_description-joint-state-publisher" />
-      <nt:source>
-        <nt:source-node name="robot_description" /> 
-        <nt:source-tp>sub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node name="robot-state-publisher" />
-        <nt:dest-tp>sub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nt:link> <!-- publishes to (node-name-publishers_name)-->
-      <nt:link-id name="joint-state-publisher-joint_states" />
-      <nt:source>
-        <nt:source-node name="joint-state-publisher" />
-        <nt:source-tp>pub</nt:source-tp>
-      </nt:source>
-      <nt:destination>
-        <nt:dest-node name="joint_states" />
-        <nt:dest-tp>pub</nt:dest-tp>
-      </nt:destination>
-    </nt:link>
-
-    <nw:node> <!-- /joint_states topic -->
-      <nw:node-id name="/joint_states" /> <!-- ros topic tipusú yang node! -->
-      <ros:ros-node-attributes>
-        <ros:ros-node-type>topic</ros:ros-node-type>
-        <ros:topic-type name="sensor_msgs/msg/JointState" hz="10" bw="3.57 KB/s"/>
-      </ros:ros-node-attributes>
-      <nt:termination-point>
-        <nt:tp-id>pub</nt:tp-id>
-      </nt:termination-point>
-      <nt:termination-point>
-        <nt:tp-id>sub</nt:tp-id>
-      </nt:termination-point>
-    </nw:node>
-   </nw:network>
-
-  </xacro:macro>
-  </yang>
+   <xacro:closed-control-loop 
+      control_loop_id="2" 
+      containing_link_ids="ur3e-controlbox-ur3e-arm-link2, ur3e-controlbox-poe-switch-link2, nuc-poe-switch-link2"
+      latency="22"
+      cycle_time="1002"
+      frequency="5002"
+      payload_capacity="3000"
+      reach="3"
+      end_effector_type="welding_tool2"
+      safety_features="true"
+      maintenance_requirements="medium"
+      environment="cleanroom"
+      safety_standard_compliance="ISO102182"/>
 
 </robot>
