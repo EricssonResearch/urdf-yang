@@ -1,0 +1,121 @@
+module component-connections {
+    yang-version 1.1;
+    namespace "urn:component-connections";
+    prefix "cc";
+
+    // Import IETF standard modules
+    import ietf-inet-types {
+        prefix "inet";
+    }
+
+    // Container for representing component connections
+    container component {
+
+        // List of connections, each uniquely identified by 'id'
+        list connection {
+            key id;
+
+            // Unique identifier for the connection
+            leaf id {
+                type string;
+                description
+                  "Unique identifier for the connection";
+            }
+
+            // Container for Layer 1 (physical) connection parameters
+            container layer1-connection {
+                // Source IPv4 address
+                leaf source-ip {
+                    type inet:ipv4-address;
+                    description
+                      "Source IPv4 address for Layer 1 connection";
+                }
+
+                // Destination IPv4 address
+                leaf dest-ip {
+                    type inet:ipv4-address;
+                    description
+                      "Destination IPv4 address for Layer 1 connection";
+                }
+
+                // Port number for Layer 1 connection
+                leaf port {
+                    type inet:port-number;
+                    description
+                      "Port number for Layer 1 connection";
+                }
+
+                // Additional Layer 1 parameters
+                leaf bandwidth {
+                    type decimal64 {
+                        fraction-digits 2;
+                    }
+                    description
+                      "Bandwidth for Layer 1 connection in Mbps";
+                }
+                leaf medium-type {
+                    type enumeration {
+                        enum fiber-optic;
+                        enum copper;
+                    }
+                    description
+                      "Medium type for Layer 1 connection (fiber-optic or copper)";
+                }
+            }
+
+            // Container for Layer 2 (logical) connection parameters
+            container layer2-connection {
+                // Protocol for Layer 2 connection (e.g., TCP, UDP)
+                leaf protocol {
+                    type identityref {
+                        base connection-protocols;
+                    }
+                    description
+                      "Protocol for Layer 2 connection (e.g., TCP, UDP)";
+                }
+
+                // Additional Layer 2 parameters
+                leaf vlan-id {
+                    type uint16;
+                    description
+                      "VLAN ID for Layer 2 connection";
+                }
+                leaf mtu {
+                    type uint16;
+                    description
+                      "Maximum Transmission Unit (MTU) for Layer 2 connection";
+                }
+            }
+
+            // Operational state data
+            leaf connection-status {
+                type enumeration {
+                    enum up;
+                    enum down;
+                }
+                description
+                  "Operational status of the connection (up or down)";
+            }
+        }
+    }
+
+    // Base identity for connection protocols
+    identity connection-protocols {
+        description
+          "Base identity for connection protocols.";
+    }
+
+    // Identity for Transmission Control Protocol (TCP)
+    identity tcp {
+        base connection-protocols;
+        description
+          "Transmission Control Protocol (TCP)";
+    }
+
+    // Identity for User Datagram Protocol (UDP)
+    identity udp {
+        base connection-protocols;
+        description
+          "User Datagram Protocol (UDP)";
+    }
+}
