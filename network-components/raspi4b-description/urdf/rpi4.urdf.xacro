@@ -12,7 +12,7 @@
 
     <xacro:macro name="rpi4" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=RPi_L2 L1_id:=RPi_L1">
         <yang>
-            <!-- L2 network topology -->
+            <!-- Raspi4B L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -32,7 +32,7 @@
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- Raspi4B L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>

@@ -37,7 +37,7 @@
         
         
         <yang>
-            <!-- L2 network topology -->
+            <!-- Flightrack L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -60,7 +60,7 @@
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- Flightrack L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>

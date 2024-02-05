@@ -39,7 +39,7 @@
         </link>
 
         <yang>
-            <!-- L2 network topology -->
+            <!-- NUC L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -54,13 +54,13 @@
                         <nw:network-ref>${L2_id}</nw:network-ref>
                         <nw:node-ref>${L1_id}</nw:node-ref>
                     </nw:supporting-node>
-                    <xacro:usb30_L2 id="usb_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
-                    <xacro:cat6_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                    <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
+                    <xacro:cat6_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
                     <xacro:wifi5_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- NUC L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>

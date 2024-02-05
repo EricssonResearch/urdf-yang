@@ -5,13 +5,14 @@
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="mikrotik_hap">
+    
     <xacro:include filename="$(find interface-description)/urdf/wifi5.urdf.xacro"/>
     <xacro:include filename="$(find interface-description)/urdf/wifi4.urdf.xacro"/>
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
 
     <xacro:macro name="mikrotik_hap" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L1_id:=Mikrotik_HAP_L1 L2_id:=Mikrotik_HAP_L2">
         <yang>
-            <!-- L2 network topology -->
+            <!-- Mikrotik L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -36,7 +37,7 @@
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- Mikrotik L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>

@@ -38,7 +38,7 @@
         
         
         <yang>
-            <!-- L2 network topology -->
+            <!-- radiodot L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -57,7 +57,7 @@
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- radiodot L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>

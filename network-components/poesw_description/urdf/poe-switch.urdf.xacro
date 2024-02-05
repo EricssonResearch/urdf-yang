@@ -4,6 +4,9 @@
        xmlns:nt="urn:network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
+       xmlns:clc="urn:closed-loop-control"
+       xmlns:seals="urn:3gpp-seal-server"
+
        name="poesw">
     
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
@@ -37,7 +40,7 @@
         
         
         <yang>
-            <!-- L2 network topology -->
+            <!-- POE Switch L2 network topology -->
             <nw:network>
                 <nw:network-id>${L2_network_id}</nw:network-id>
                 <nw:network-types>
@@ -60,7 +63,7 @@
                 </nw:node>
             </nw:network>
 
-            <!-- Physical network topology -->
+            <!-- POE Switch L1 network topology -->
             <nw:network>
                 <nw:network-id>${L1_network_id}</nw:network-id>
                 <nw:network-types>
@@ -78,6 +81,15 @@
                     <xacro:cat6_L1 id="eth_5"/>
                 </nw:node>
             </nw:network>
+
+            <!-- POE Switch closed loop communication -->
+
+            <clc:control-system-data>
+                
+
+            </clc:control-system-data>
+            
+
         </yang>
     </xacro:macro>
 </robot>
