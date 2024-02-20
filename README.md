@@ -1,4 +1,7 @@
 # Networked robotic system description
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Robot system model description extended with network architecture
 
 This repository hosts the robot description files for the following components:
