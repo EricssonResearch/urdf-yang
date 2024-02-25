@@ -37,7 +37,7 @@ The listed model files have been extended with network topology information.
 - Build containing packages:
 - `colcon build`
 - Source workspace:
-- `. install/setup.bash`
+- `source ./install/setup.bash`
 
 ## Visualizing system
 
