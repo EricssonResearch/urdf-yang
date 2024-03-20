@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="radiodot">
@@ -9,7 +9,7 @@
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
     <xacro:include filename="$(find interface-description)/urdf/nw_5g_rel15.urdf.xacro"/>
 
-    <xacro:macro name="radiodot" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=Radiobot_L2 L1_id:=Radiobot_L1">
+    <xacro:macro name="radiodot" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=radiobot_L2 L1_id:=radiobot_L1">
         
         <joint name="radiodot_joint" type="fixed">
             <origin xyz="-1 1.2 2" rpy="0 0 0" />
@@ -66,9 +66,9 @@
                 <nw:node>
                     <nw:node-id>${L1_id}</nw:node-id>
                     <l1t:l1-node-attributes>
-                        <l1t:device-type>switch</l1t:device-type>
+                        <l1t:device-type>radiodot</l1t:device-type>
                     </l1t:l1-node-attributes>
-                    <xacro:cat6_L1 id="eth_1"/>
+                    <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
                 </nw:node>
             </nw:network>
         </yang>
