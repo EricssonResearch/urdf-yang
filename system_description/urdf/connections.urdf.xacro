@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="topology-link">
 
-    <xacro:macro name="topology-link" params="src_node src_tp dst_node dst_tp conn_type">
+    <xacro:macro name="topology-link" params="src_node src_tp dst_node dst_tp conn_type reconfig">
 
         <yang>
             <!-- robot-network-topology-link -->
@@ -15,6 +15,7 @@
                     <nt:link-id>${src_node}-${dst_node}-link</nt:link-id>
                     <l1t:l1-link-attributes>
                         <type>${conn_type}</type>
+                        <reconfig>${reconfig}</reconfig>
                     </l1t:l1-link-attributes>
                     <nt:source>
                         <source-node>${src_node}</source-node>

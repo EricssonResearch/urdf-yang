@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
        xmlns:rcl="urn:robot-control-loop"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="closed-control-loop">
 
-    <xacro:macro name="closed-control-loop" params="control_loop_id containing_link_ids latency cycle_time frequency payload_capacity reach end_effector_type safety_features maintenance_requirements environment safety_standard_compliance">
+    <xacro:macro name="closed-control-loop" params="control_loop_id supporting_links latency cycle_time frequency payload_capacity reach safety_features maintenance_requirements environment safety_standard_compliance">
 
         <yang>
             <!-- robot-control-loop -->
             <rcl:control-loops>
 
                 <rcl:control-loop-id>${control_loop_id}</rcl:control-loop-id>
-                <containing-link-ids>${containing_link_ids}</containing-link-ids>
+                <containing-link-ids>${supporting_links}</containing-link-ids>
                 <latency>${latency}</latency>
                 <cycle-time>${cycle_time}</cycle-time>
                 <frequency>${frequency}</frequency>
                 <payload-capacity>${payload_capacity}</payload-capacity>
                 <reach>${reach}</reach>
-                <end-effector-type>${end_effector_type}</end-effector-type>
+                <!-- <end-effector-type>${end_effector_type}</end-effector-type> -->
                 <safety-features>${safety_features}</safety-features>
                 <maintenance-requirements>${maintenance_requirements}</maintenance-requirements>
                 <environment>${environment}</environment>

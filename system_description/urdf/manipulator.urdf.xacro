@@ -62,7 +62,7 @@
 
 <!-- Connection/link descriptions -->
   
-  <yang xmlns:nw="urn:network"> 
+  <yang xmlns:nw="urn:robot-network"> 
   
     <!-- link between d455cam and nuc -->
     <connection name="nuc-sensor_d455" type="wired" dev1="nuc" dev2="sensor_d455" />
