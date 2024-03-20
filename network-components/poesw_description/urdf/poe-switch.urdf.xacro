@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
-       xmlns:clc="urn:closed-loop-control"
-       xmlns:seals="urn:3gpp-seal-server"
-
        name="poesw">
     
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
 
-    <xacro:macro name="poesw" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=PoE_Switch_L2 L1_id:=PoE_Switch_L1">
+    <xacro:macro name="poesw" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=poesw_L2 L1_id:=poesw_L1">
         
         <joint name="poeswitch_joint" type="fixed">
             <origin xyz="-1 1.5 0" rpy="0 0 0" />
@@ -74,21 +71,13 @@
                     <l1t:l1-node-attributes>
                         <l1t:device-type>switch</l1t:device-type>
                     </l1t:l1-node-attributes>
-                    <xacro:cat6_L1 id="eth_1"/>
-                    <xacro:cat6_L1 id="eth_2"/>
-                    <xacro:cat6_L1 id="eth_3"/>
-                    <xacro:cat6_L1 id="eth_4"/>
-                    <xacro:cat6_L1 id="eth_5"/>
+                    <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_2" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_3" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_4" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_5" connector_type="rj45" connector_format="female"/>
                 </nw:node>
             </nw:network>
-
-            <!-- POE Switch closed loop communication -->
-
-            <clc:control-system-data>
-                
-
-            </clc:control-system-data>
-            
 
         </yang>
     </xacro:macro>
