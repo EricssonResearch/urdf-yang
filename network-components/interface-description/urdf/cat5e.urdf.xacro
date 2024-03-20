@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="cat5e">
@@ -23,15 +23,6 @@
     <xacro:property name="cat5e_security_level" value="${cat5e_props['wired-connection']['security-level']}"/>
 
 
-    <xacro:macro name="cat5e_L1" params="id">
-        <nt:termination-point>
-            <nt:tp-id>${id}</nt:tp-id>
-            <l1t:l1-termination-point-attributes>
-                <l1t:intertface-type>cat5e</l1t:intertface-type>
-            </l1t:l1-termination-point-attributes>
-        </nt:termination-point>
-    </xacro:macro>
-
     <xacro:macro name="cat5e_L2" params="id supporting_network supporting_node supporting_tp">
         <nt:termination-point>
             <nt:tp-id>${id}</nt:tp-id>
@@ -44,6 +35,16 @@
                 <l2t:bandwidth>${cat5e_bandwidth}</l2t:bandwidth>
                 <l2t:jitter>${cat5e_jitter}</l2t:jitter>
             </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="cat5e_L1" params="id connector_type connector_format">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:connector-type>${connector_type}</l1t:connector-type>
+                <l1t:connector-format>${connector_format}</l1t:connector-format>
+            </l1t:l1-termination-point-attributes>
         </nt:termination-point>
     </xacro:macro>
 

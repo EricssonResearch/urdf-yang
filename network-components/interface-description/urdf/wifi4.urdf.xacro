@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="wifi4">
@@ -22,15 +22,7 @@
     <xacro:property name="wifi4_scalability" value="${wifi4_props['wireless-connection']['scalability']}"/>
     <xacro:property name="wifi4_security_level" value="${wifi4_props['wireless-connection']['security-level']}"/>
 
-
-    <xacro:macro name="wifi4_L1" params="id">
-        <nt:termination-point>
-            <nt:tp-id>${id}</nt:tp-id>
-            <l1t:l1-termination-point-attributes>
-                <l1t:intertface-type>wifi4</l1t:intertface-type>
-            </l1t:l1-termination-point-attributes>
-        </nt:termination-point>
-    </xacro:macro>
+    <xacro:macro name="wifi4" params="parent L2_network_id L1_network_id L2_id:=wifi4_L2 L1_id:=wifi4_L1"/>
 
     <xacro:macro name="wifi4_L2" params="id supporting_network supporting_node supporting_tp">
         <nt:termination-point>
@@ -44,6 +36,16 @@
                 <l2t:bandwidth>${wifi4_bandwidth}</l2t:bandwidth>
                 <l2t:jitter>${wifi4_jitter}</l2t:jitter>
             </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="wifi4_L1" params="id connector_type connector_format">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:connector-type>${connector_type}</l1t:connector-type>
+                <l1t:connector-format>${connector_format}</l1t:connector-format>
+            </l1t:l1-termination-point-attributes>
         </nt:termination-point>
     </xacro:macro>
 

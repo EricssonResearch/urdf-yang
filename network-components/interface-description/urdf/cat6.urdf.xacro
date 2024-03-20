@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="cat6">
@@ -22,14 +22,32 @@
     <xacro:property name="cat6_scalability" value="${cat6_props['wired-connection']['scalability']}"/>
     <xacro:property name="cat6_security_level" value="${cat6_props['wired-connection']['security-level']}"/>
 
+    <xacro:macro name="cat6" params="parent L2_network_id L1_network_id L2_id:=cat6_L2 L1_id:=cat6_L1">
 
-    <xacro:macro name="cat6_L1" params="id">
-        <nt:termination-point>
-            <nt:tp-id>${id}</nt:tp-id>
-            <l1t:l1-termination-point-attributes>
-                <l1t:intertface-type>cat6</l1t:intertface-type>
-            </l1t:l1-termination-point-attributes>
-        </nt:termination-point>
+        <joint name="cat6_joint" type="fixed">
+            <origin xyz="-1 1 0" rpy="0 0 0" />
+            <parent link="${parent}"/>
+            <child link="cat6_link"/>
+        </joint>
+
+        <link name="cat6_link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                <mesh filename="package://interface_description/meshes/rj45_female.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://interface_description/meshes/rj45_female.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
     </xacro:macro>
 
     <xacro:macro name="cat6_L2" params="id supporting_network supporting_node supporting_tp">
@@ -44,6 +62,16 @@
                 <l2t:bandwidth>${cat6_bandwidth}</l2t:bandwidth>
                 <l2t:jitter>${cat6_jitter}</l2t:jitter>
             </l2t:l2-termination-point-attributes>
+        </nt:termination-point>
+    </xacro:macro>
+
+    <xacro:macro name="cat6_L1" params="id connector_type connector_format">
+        <nt:termination-point>
+            <nt:tp-id>${id}</nt:tp-id>
+            <l1t:l1-termination-point-attributes>
+                <l1t:connector-type>${connector_type}</l1t:connector-type>
+                <l1t:connector-format>${connector_format}</l1t:connector-format>
+            </l1t:l1-termination-point-attributes>
         </nt:termination-point>
     </xacro:macro>
 
