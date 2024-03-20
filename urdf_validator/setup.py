@@ -10,6 +10,7 @@ setup(
     packages=find_packages(exclude=['test']),
     py_modules=[
         'urdf_validator.urdf_validator_node',
+        'urdf_validator.instance_validator_node'
     ],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -19,7 +20,7 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='martzi',
+    maintainer='Marcell Balogh',
     maintainer_email='balogh.marcell@edu.bme.hu',
     description='TODO: Package description',
     license='TODO: License declaration',
@@ -27,7 +28,8 @@ setup(
     entry_points={
         'console_scripts': [
             'urdf_validator_node = urdf_validator.urdf_validator_node:main',
-            'urdf_formatter_node = urdf_validator.urdf_formatter_node:main'
+            'urdf_formatter_node = urdf_validator.urdf_formatter_node:main',
+            'instance_validator = urdf_validator.instance_validator_node:main'
         ],
     },
 )
