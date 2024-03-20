@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="rpi4">
@@ -10,7 +10,7 @@
     <xacro:include filename="$(find interface-description)/urdf/usb20.urdf.xacro"/>
     <xacro:include filename="$(find interface-description)/urdf/cat5e.urdf.xacro"/>
 
-    <xacro:macro name="rpi4" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=RPi_L2 L1_id:=RPi_L1">
+    <xacro:macro name="rpi4" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=rpi4_L2 L1_id:=rpi4_L1">
         <yang>
             <!-- Raspi4B L2 network topology -->
             <nw:network>
@@ -28,7 +28,11 @@
                         <nw:node-ref>${L1_id}</nw:node-ref>
                     </nw:supporting-node>
                     <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
-                    <xacro:cat5e_L2 id="eth-cat5e_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth-cat5-1"/>
+                    <xacro:usb30_L2 id="usb_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_2"/>
+                    <xacro:usb20_L2 id="usb_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_3"/>
+                    <xacro:usb20_L2 id="usb_4" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_4"/>
+                    <xacro:cat5e_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                    <xacro:wifi4_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
                 </nw:node>
             </nw:network>
 
@@ -43,8 +47,12 @@
                     <l1t:l1-node-attributes>
                         <l1t:device-type>rpi4</l1t:device-type>
                     </l1t:l1-node-attributes>
-                    <xacro:usb30_L1 id="usb_1"/>
-                    <xacro:cat5e_L1 id="eth-cat5e_1"/>
+                    <xacro:usb30_L1 id="usb_1" connector_type="usb-std_A" connector_format="female"/>
+                    <xacro:usb30_L1 id="usb_2" connector_type="usb-std_A" connector_format="female"/>
+                    <xacro:usb20_L1 id="usb_3" connector_type="usb-std_A" connector_format="female"/>
+                    <xacro:usb20_L1 id="usb_4" connector_type="usb-std_A" connector_format="female"/>
+                    <xacro:cat5e_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
+                    <xacro:wifi4_L1 id="wireless_1" connector_type="wireless" connector_format="wifi4"/>
                 </nw:node>
             </nw:network>
         </yang>
