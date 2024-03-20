@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="mikrotik_hap">
@@ -10,7 +10,7 @@
     <xacro:include filename="$(find interface-description)/urdf/wifi4.urdf.xacro"/>
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
 
-    <xacro:macro name="mikrotik_hap" params="parent L2_network_id:=Data_Link L1_network_id:=Physical L1_id:=Mikrotik_HAP_L1 L2_id:=Mikrotik_HAP_L2">
+    <xacro:macro name="mikrotik_hap" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=mikrotik_hap_L2 L1_id:=mikrotik_hap_L1">
         <yang>
             <!-- Mikrotik L2 network topology -->
             <nw:network>
@@ -48,13 +48,13 @@
                     <l1t:l1-node-attributes>
                         <l1t:device-type>router</l1t:device-type>
                     </l1t:l1-node-attributes>
-                    <xacro:cat6_L1 id="eth_1"/>
-                    <xacro:cat6_L1 id="eth_2"/>
-                    <xacro:cat6_L1 id="eth_3"/>
-                    <xacro:cat6_L1 id="eth_4"/>
-                    <xacro:cat6_L1 id="eth_5"/>
-                    <xacro:wifi5_L1 id="wireless_1"/>
-                    <xacro:wifi4_L1 id="wireless_2"/>
+                    <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_2" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_3" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_4" connector_type="rj45" connector_format="female"/>
+                    <xacro:cat6_L1 id="eth_5" connector_type="rj45" connector_format="female"/>
+                    <xacro:wifi5_L1 id="wireless_1" connector_type="wireless" connector_format="wifi_5"/>
+                    <xacro:wifi4_L1 id="wireless_2" connector_type="wireless" connector_format="wifi_4"/>
                 </nw:node>
             </nw:network>
         </yang>
