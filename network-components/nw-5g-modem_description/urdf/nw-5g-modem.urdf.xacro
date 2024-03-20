@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:network"
-       xmlns:nt="urn:network-topology"
+       xmlns:nw="urn:robot-network"
+       xmlns:nt="urn:robot-network-topology"
        xmlns:l1t="urn:layer1"
        xmlns:l2t="urn:layer2"
        name="nw-5g-modem">
@@ -9,7 +9,7 @@
     <xacro:include filename="$(find interface-description)/urdf/usb30.urdf.xacro" />
     <xacro:include filename="$(find interface-description)/urdf/nw_5g_rel15.urdf.xacro"/>
 
-    <xacro:macro name="nw-5g-modem" params=" parent L2_network_id:=Data_Link L1_network_id:=Physical L2_id:=nw-5g-modem_L2 L1_id:=nw-5G-modem_L1">
+    <xacro:macro name="nw-5g-modem" params=" parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=nw_5g_modem_L2 L1_id:=nw_5g_modem_L1">
      
         <joint name="nw-5g-modem_joint" type="fixed">
             <origin xyz="-1 1.2 0" rpy="0 0 3.14" />
@@ -54,7 +54,7 @@
                         <nw:node-ref>${L1_id}</nw:node-ref>
                     </nw:supporting-node>
                     <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
-                    <xacro:nw-5g-rel15_L2 id="5g_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="5g_1"/>
+                    <xacro:nw_5g_rel15_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
                 </nw:node>
             </nw:network>
 
@@ -69,8 +69,8 @@
                     <l1t:l1-node-attributes>
                         <l1t:device-type>nw-5g-modem</l1t:device-type>
                     </l1t:l1-node-attributes>
-                    <xacro:usb30_L1 id="usb_1"/>
-                    <xacro:nw-5g-rel15_L1 id="5g_1"/>
+                    <xacro:usb30_L1 id="usb_1" connector_type="usb-std_A" connector_format="female"/>
+                    <xacro:nw_5g_rel15_L1 id="wireless_1" connector_type="wireless" connector_format="5g"/>
                 </nw:node>
             </nw:network>
         </yang>
