@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 <robot name="$(arg name)"
    xmlns:xacro="http://wiki.ros.org/xacro" 
-   xmlns:ros="urn:ros"
-   xmlns:nw="urn:network"
-   xmlns:nt="urn:network-topology"
+   xmlns:nw="urn:robot-network"
+   xmlns:nt="urn:robot-network-topology"
    xmlns:l1t="urn:layer1"
-   xmlns:l2t="urn:layer2"
-   xmlns:rcl="urn:robot-control-loop">
+   xmlns:l2t="urn:layer2">
 
    <xacro:property name="L1_networkID" value="physical"/>
    <xacro:property name="L2_networkID" value="layer2"/>
@@ -155,41 +153,58 @@
    <!-- link radiodot with world -->
    <xacro:radiodot parent="world"/>
 
-   <xacro:topology-link src_node="poe-switch" src_tp="eth_1" dst_node="mikrotik" dst_tp="eth_1" conn_type="wired"/>
-   <xacro:topology-link src_node="mikrotik" src_tp="eth_2" dst_node="rpi4" dst_tp="eth_1" conn_type="wired"/>
-   <xacro:topology-link src_node="realsense-d455i" src_tp="usb_1" dst_node="nuc" dst_tp="usb_1" conn_type="wired"/>
-   <xacro:topology-link src_node="nuc" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_2" conn_type="wired"/>
-   <xacro:topology-link src_node="rg2ft-computebox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_3" conn_type="wired"/>
-   <xacro:topology-link src_node="rg2ft-computebox" src_tp="prop_1" dst_node="rg2ft-gripper" dst_tp="prop_1" conn_type="wired"/>
-   <xacro:topology-link src_node="ur3e-controlbox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_4" conn_type="wired"/>
-   <xacro:topology-link src_node="ur3e-controlbox" src_tp="prop_1" dst_node="ur3e-arm" dst_tp="prop_1" conn_type="wired"/>
-   <xacro:topology-link src_node="5g-modem" src_tp="usb_1" dst_node="rpi4" dst_tp="usb_1" conn_type="wired"/>
-   <xacro:topology-link src_node="5g-modem" src_tp="wireless_1" dst_node="5g-dot" dst_tp="wireless_1" conn_type="wired"/>
-   <xacro:topology-link src_node="5g-dot" src_tp="eth_1" dst_node="flightrack" dst_tp="eth_1" conn_type="wired"/>
+   <xacro:topology-link src_node="poe-switch" src_tp="eth_1" dst_node="mikrotik" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="mikrotik" src_tp="eth_2" dst_node="rpi4" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="realsense-d455i" src_tp="usb_1" dst_node="nuc" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="nuc" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_2" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_3" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="prop_1" dst_node="rg2ft-gripper" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_4" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="prop_1" dst_node="ur3e-arm" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="usb_1" dst_node="rpi4" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="wireless_1" dst_node="5g-dot" dst_tp="wireless_1" conn_type="wireless" reconfig="sw_supported"/>
+   <xacro:topology-link src_node="5g-dot" src_tp="eth_1" dst_node="flightrack" dst_tp="eth_1" conn_type="wired" reconfig="sw_supported"/>
 
    <xacro:closed-control-loop 
       control_loop_id="1" 
-      containing_link_ids="ur3e-controlbox-ur3e-arm-link, ur3e-controlbox-poe-switch-link, nuc-poe-switch-link"
+      supporting_links="nuc-poe-switch-link, 
+                          poe-switch-mikrotik-link, 
+                          mikrotik-rpi4-link, 
+                          5g-modem-rpi4-link, 
+                          5g-modem-5g-dot-link, 
+                          5g-modem-rpi4-link, 
+                          5g-modem-5g-dot-link, 
+                          5g-dot-flightrack-link"
       latency="2"
       cycle_time="100"
       frequency="500"
       payload_capacity="3000"
       reach="3"
-      end_effector_type="welding_tool"
       safety_features="true"
       maintenance_requirements="medium"
       environment="cleanroom"
       safety_standard_compliance="ISO10218"/>
 
+
+<!-- NOTE -->
+<!-- fel kell sorolni a linkeket mert a-bol b-be több úton is el lehet majd jutni -->
+<!-- link requestet kell tudnia kezelni, ami alapján NEF tud működni -->
+<!-- menet közben változó igények kezelése? -> on demand reconfiguration -->
+<!-- yang modulba if feature-eket felvinni, különböző qos szintekre milyen követelményekhez minek kell teljesülnie -->
+
    <xacro:closed-control-loop 
       control_loop_id="2" 
-      containing_link_ids="ur3e-controlbox-ur3e-arm-link2, ur3e-controlbox-poe-switch-link2, nuc-poe-switch-link2"
+      supporting_links="nuc-poe-switch-link, 
+                          poe-switch-mikrotik-link, 
+                          mikrotik-rpi4-link, 
+                          5g-modem-rpi4-link, 
+                          5g-modem-5g-dot-link, 
+                          5g-dot-flightrack-link"
       latency="22"
       cycle_time="1002"
       frequency="5002"
       payload_capacity="3000"
       reach="3"
-      end_effector_type="welding_tool2"
       safety_features="true"
       maintenance_requirements="medium"
       environment="cleanroom"
