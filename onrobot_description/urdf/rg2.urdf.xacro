@@ -2,16 +2,16 @@
 <!-- xacro for rg2 mounted on the manipulator -->
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:template:template-network"
-       xmlns:nt="urn:template:template-network-topology"
-       xmlns:l1t="urn:template:template-l1"
-       xmlns:l2t="urn:template:template-l2"
-       name="RG2FT_computebox">
+       xmlns:nw="urn:ietf:params:xml:ns:yang:robot-network"
+       xmlns:nt="urn:ietf:params:xml:ns:yang:robot-network-topology"
+       xmlns:l1t="urn:ietf:params:xml:ns:yang:layer1"
+       xmlns:l2t="urn:ietf:params:xml:ns:yang:layer2"
+       name="rg2ft">
+
   <xacro:include filename="../../interface-description/urdf/usb20.urdf.xacro"/>
   <xacro:include filename="../../interface-description/urdf/cat5e.urdf.xacro"/>
   
-  <xacro:macro name="rg2" params="prefix L1_id L2_id L1_network_id L2_network_id">
-
+  <xacro:macro name="rg2ft" params="prefix L2_network_id:=network_level L1_network_id:=device_level L2_id:=rg2ft_L2 L1_id:=rg2ft_L1">
     <!-- rg2 joint -->
     <joint name="rg2_joint" type="fixed">
       <origin rpy="0 0 0" xyz="0.038 0 0"/>
@@ -48,41 +48,35 @@
     <link name="rg2_eef_link"/>
 
     <yang>
-        <!-- L2 network topology -->
-        <nw:network>
-            <nw:network-id>${L2_network_id}</nw:network-id>
-            <nw:network-types>
-                <l2t:l2-topology/>
-            </nw:network-types>
-            <nw:supporting-network>
-                <nw:network-ref>${L1_network_id}</nw:network-ref>
-            </nw:supporting-network>
-            <nw:node>
-                <nw:node-id>${L2_id}</nw:node-id>
-                <nw:supporting-node>
-                    <nw:network-ref>${L1_network_id}</nw:network-ref>
-                    <nw:node-ref>${L1_id}</nw:node-ref>
-                </nw:supporting-node>
-                <xacro:cat5e_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+        <!-- rg2FT L2 network topology -->
+        <network>
+            <network-id>${L2_network_id}</network-id>
+            <supporting-network>
+                <network-ref>${L1_network_id}</network-ref>
+            </supporting-network>
+            <node>
+                <node-id>${L2_id}</node-id>
+                <supporting-node>
+                    <network-ref>${L1_network_id}</network-ref>
+                    <node-ref>${L1_id}</node-ref>
+                </supporting-node>
+                <xacro:cat5e_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
                 <xacro:usb20_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
-            </nw:node>
-        </nw:network>
+            </node>
+        </network>
 
-        <!-- Physical network topology -->
-        <nw:network>
-            <nw:network-id>${L1_network_id}</nw:network-id>
-            <nw:network-types>
-                <l1t:l1-topology/>
-            </nw:network-types>
-            <nw:node>
-                <nw:node-id>${L1_id}</nw:node-id>
-                <l1t:l1-node-attributes>
-                    <l1t:device-type>gripper</l1t:device-type>
-                </l1t:l1-node-attributes>
-                <xacro:cat5e_L1 id="eth-cat5e_1"/>
-                <xacro:usb20_L1 id="usb_1"/>
-            </nw:node>
-        </nw:network>
+        <!-- rg2FT L1 network topology -->
+        <network>
+            <network-id>${L1_network_id}</network-id>
+            <node>
+                <node-id>${L1_id}</node-id>
+                <layer1:l1-node-attributes>
+                    <device-type>gripper</device-type>
+                </layer1:l1-node-attributes>
+                <xacro:cat5e_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
+                <xacro:usb20_L1 id="usb_1" connector_type="usb-std_A" connector_format="female"/>
+            </node>
+        </network>
     </yang>
   </xacro:macro>
 </robot>
