@@ -1,0 +1,172 @@
+module layer1 {
+    yang-version 1.1;
+    namespace "urn:ietf:params:xml:ns:yang:layer1";
+    prefix "l1t";
+    
+    import robot-network {
+        prefix "rnw";
+    }
+
+    import robot-network-topology {
+        prefix "rnt";
+    }
+
+    organization
+        "HSN-Lab & Ericsson Research Hungary";
+
+    contact
+        "Editor:    Attila Vidacs";
+
+    description
+        "This module defines a model for L1 (physical) networking.";
+
+    revision 2023-04-26 {
+        description
+          "Initial revision";
+        reference
+          "RFC 8345: A YANG Data Model for Network Topologies";
+    }
+
+    typedef device-type {
+        type enumeration {
+            enum router;
+            enum pc;
+            enum robotic-arm;
+            enum controlbox;
+            enum gripper;
+            enum switch;
+            enum other;
+            enum camera;
+            enum rpi4;
+            enum 5g-modem;
+            enum nw-5g-modem;
+            enum radiodot;
+            enum flightrack;
+        }
+        description
+          "Device types defined for networked robot systems";
+    }
+
+    typedef link-type {
+        type enumeration {
+            enum wired;
+            enum wireless;
+        }
+        description
+          "Link types defined for networked robot systems";
+    }
+
+    typedef reconfig {
+        type enumeration {
+            enum sw_supported;
+            enum hw_supported;
+        }
+        description
+          "Supported reconfiguration modes";
+    }
+
+    typedef wireless-qos{
+        type string;
+        description
+          "QoS features of wireless connections";
+    }
+
+    typedef wired-qos{
+        type string;
+        description
+          "QoS features of wired connections";
+
+    }
+
+    typedef qos-type {
+
+        type enumeration {
+            enum wired-qos;
+            enum wireless-qos;
+        }
+        description
+          "Quality of Service types";
+    }
+
+    feature nef-support {
+        description
+          "Network Exposure Function feature";
+    }
+
+
+    augment "/rnw:networks/rnw:network/rnw:network-types" {
+        description
+            "Augmenting L1 topology";
+        container l1-topology {
+            presence "Indicates L1 topology";
+            description
+                "The presence of the container node indicates L1 topology";
+        }
+    }
+
+    augment "/rnw:networks/rnw:network/rnw:node" {
+        // when "../rnw:network-types/l1t:l1-topology" {
+        // }
+        description
+          "Augmentation parameters apply only for networks with
+           L1 topology";
+        container l1-node-attributes {
+            description
+                "Contains node (physical device) attributes";
+            leaf device-type {
+                type device-type;
+                description
+                    "Type of device. E.g., robot-arm, switch, rpi4, ...";
+            }
+        }
+    }
+
+    augment "/rnw:networks/rnw:network/rnt:link" {
+        // when "../rnw:network-types/l1t:l1-topology" {
+        // }
+        description
+          "Augmentation parameters apply only for networks with
+           L1 topology";
+        list l1-link-attributes {
+            description
+                "Contains link attributes.";
+            leaf type {
+                type link-type;
+                description
+                    "Link type. E.g., wired, wireless";
+            }
+            leaf reconfig {
+                type reconfig;
+                description
+                    "Whether it supports software reconfiguration or not";
+            }
+        }
+    }
+
+    augment "/rnw:networks/rnw:network/rnw:node/"
+         +"rnt:termination-point" {
+        // when "../../rnw:network-types/l1t:l1-topology" {
+        // }
+        description
+          "Augmentation parameters apply only for networks with
+           L1 topology";
+        list l1-termination-point-attributes {
+            description
+                "Contains L1 termination point (physical port) attributes";
+            leaf connector-type {
+                type string;
+                description
+                    "Type of physical port connector. E.g., RJ45, USB-C";
+            }
+            leaf connector-format{
+                type enumeration{
+                    enum male;
+                    enum female;
+                    enum wireless;
+                }
+                description
+                  "Format of physical port connector, male or female";
+            }
+        }
+    }
+}
