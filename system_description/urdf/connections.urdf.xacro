@@ -1,32 +1,35 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:robot-network"
-       xmlns:nt="urn:robot-network-topology"
-       xmlns:l1t="urn:layer1"
-       xmlns:l2t="urn:layer2"
+       xmlns:robot-network-topology="urn:ietf:params:xml:ns:yang:robot-network-topology"
+       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
        name="topology-link">
 
-    <xacro:macro name="topology-link" params="src_node src_tp dst_node dst_tp conn_type reconfig">
+    <xacro:macro name="topology-link" params="topology_link_id src_node src_tp dst_node dst_tp conn_type reconfig">
 
         <yang>
             <!-- robot-network-topology-link -->
-            <nw:network>
-                <nw:robot-network-topology-link>
-                    <nt:link-id>${src_node}-${dst_node}-link</nt:link-id>
-                    <l1t:l1-link-attributes>
+            <network>
+            <network-id>topology_level</network-id>
+                <robot-network-topology:link>
+                    <link-id>${topology_link_id}</link-id>
+                    <robot-network-topology:link-id>${src_node}-${dst_node}-link</robot-network-topology:link-id>
+                    <layer1:l1-link-attributes>
                         <type>${conn_type}</type>
                         <reconfig>${reconfig}</reconfig>
-                    </l1t:l1-link-attributes>
-                    <nt:source>
+                    </layer1:l1-link-attributes>
+                    <source>
                         <source-node>${src_node}</source-node>
                         <source-tp>${src_tp}</source-tp>
-                    </nt:source>
-                    <nt:destination>
+                    </source>
+                    <destination>
                         <dest-node>${dst_node}</dest-node>
                         <dest-tp>${dst_tp}</dest-tp>
-                    </nt:destination>
-                </nw:robot-network-topology-link>
-            </nw:network>
+                    </destination>
+
+                </robot-network-topology:link>
+            </network>
         </yang>
+
     </xacro:macro>
+
 </robot>
