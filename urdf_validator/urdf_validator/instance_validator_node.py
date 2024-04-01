@@ -8,14 +8,40 @@ import xmltodict
 from lxml import etree
 from yangson import DataModel
 from xml.dom.minidom import parseString
+import xml.etree.ElementTree as ET
 
 
 class instance_validator(Node):
     def __init__(self):
         super().__init__('urdf_validator_node')
         self.subscription = self.create_subscription(String, '/robot_description', self.robot_description_callback, 10)
-        self.subscription
         self.get_logger().info("init done")
+
+    def xml_to_json(self, element):
+        result = {}
+        for child in element:
+            tag = child.tag
+            if '}' in tag:
+                prefix, tag = tag.split('}')
+                tag = f"{prefix[1:]}:{tag}"
+            if child:
+                if len(child) > 1 or child[0].tag != child[-1].tag:
+                    if tag not in result:
+                        result[tag] = []
+                    result[tag].append(self.xml_to_json(child))
+                else:
+                    if tag not in result:
+                        result[tag] = {}
+                    for subchild in child:
+                        subtag = subchild.tag
+                        if '}' in subtag:
+                            subprefix, subtag = subtag.split('}')
+                            subtag = f"{subprefix[1:]}:{subtag}"
+                        # print("tag: ", tag, "subtag: ", subtag, "result: ", subchild.text)
+                        result[tag][subtag] = subchild.text
+            else:
+                result[tag] = child.text
+        return result
 
 
     def yang_content_extract(self, robot_description):
@@ -56,7 +82,7 @@ class instance_validator(Node):
     def write_to_file(self, data, filename):
         with open(filename, "w") as f:
             f.write(data)
-        self.get_logger().info(f"{data} is written to file: {filename}")
+        self.get_logger().info(f"is written to file: {filename}")
 
     
     def json_validation_against_yang(self, json_instance, yang_library_data, yang_modules_folder):
@@ -65,8 +91,8 @@ class instance_validator(Node):
         data_model = DataModel.from_file(yang_library_data, [yang_modules_folder])
         self.get_logger().info("data model loaded")
 
-        # self.get_logger().info("printing data model...")
-        # self.get_logger().info(data_model.ascii_tree(), end='') ## end nem jó valamiért
+        self.get_logger().info("printing data model...\n")
+        self.get_logger().info( data_model.ascii_tree()) 
 
 
         with open(json_instance, 'r') as j:
@@ -75,48 +101,89 @@ class instance_validator(Node):
         self.get_logger().info("loading instance...")
         instance_data = data_model.from_raw(json_instance_content)
 
-        self.get_logger().info("instance loaded")
-
         instance_data.validate()  # No output means that the validation was successful.
 
         if instance_data.validate() == None:
-            self.get_logger().info("\n data instance is VALID!")
+            self.get_logger().info("YANG data instance is VALID!")
         else:
-            self.get_logger().info("\n data instance is INVALID!")
+            self.get_logger().info("YANG data instance is INVALID!")
 
         return
 
+    def replace_namespace_prefixes(self, json_data, namespace_mapping):
+        new_json_data = {}
+        for key, value in json_data.items():
+            new_key = self.replace_namespace_prefix(key, namespace_mapping)
+            if isinstance(value, dict):
+                new_value = self.replace_namespace_prefixes(value, namespace_mapping)
+            elif isinstance(value, list):
+                new_value = [self.replace_namespace_prefixes(item, namespace_mapping) for item in value]
+            else:
+                new_value = value
+            new_json_data[new_key] = new_value
+        return new_json_data
+
+    def replace_namespace_prefix(self, key, namespace_mapping):
+        for uri, prefix in namespace_mapping.items():
+            if key.startswith(uri):
+                return key.replace(uri, prefix + ":")
+        return key
     
     def robot_description_callback(self, msg):
+        
+        ### TMP solution - needs to be parsed from XML directly
+        namespace_mapping = {
+            "urn:ietf:params:xml:ns:yang:robot-network-topology:": "robot-network-topology",
+            "urn:ietf:params:xml:ns:yang:robot-network:": "robot-network",
+            "urn:ietf:params:xml:ns:yang:layer1:": "layer1",
+            "urn:ietf:params:xml:ns:yang:layer2:": "layer2",
+            "urn:ietf:params:xml:ns:yang:robot-control-loop:": "robot-control-loop"
+        }
+
+        yang_library_data = "src/yang_tools/system-library-data.json"
+        yang_modules_folder = "src/yang_tools/yang_modules"
+        yang_xml_instance = "src/yang_tools/yang_content.xml"
+        json_instance_file = "src/yang_tools/instance_data.json"
 
         robot_description = msg.data
         yang_xml_data_pretty = str()
 
         yang_xml_data_pretty = self.yang_content_extract(robot_description)
 
-        #### TMP file saving: yang data in xml format
-        self.write_to_file(yang_xml_data_pretty, '/home/martzi/component_descr_ws/src/yang_tools/yang_content.xml')
+        # robot description model urdf saved to file
+        self.write_to_file(yang_xml_data_pretty, yang_xml_instance)
+        self.get_logger().info("robot_description topic is saved!")
 
-        xml_dict = xmltodict.parse(yang_xml_data_pretty)
+        tree = ET.parse(yang_xml_instance)
+        root = tree.getroot()
 
-        # Convert ordered dictionary to JSON string
-        json_string = json.dumps(xml_dict, indent=4)
+        root.tag="robot-network:networks"
+
+        self.get_logger().info("xml instance topic is loaded!")
         
-        #### TMP file saving: yang data in xml format
-        self.write_to_file(json_string, '/home/martzi/component_descr_ws/src/yang_tools/yang_instance_data.json')
+        json_result = json.dumps({root.tag: [self.xml_to_json(root)]}, indent=4)
+
+        # Parse JSON data
+        json_data = json.loads(json_result)
+
+        # Replace namespace prefixes
+        new_json_data = self.replace_namespace_prefixes(json_data, namespace_mapping)
+
+        # Convert back to JSON string
+        new_json_string = json.dumps(new_json_data, indent=4)
+
+    # TMP FOR DEBUG!
+        self.write_to_file(new_json_string, json_instance_file)
+        self.get_logger().info("json instance data is saved!")
 
         # self.process_and_publish_content(matches)
         # self.process_and_publish_content(robot_description)
-        self.get_logger().info("Done!")
-
-        yang_library_data = "/home/martzi/component_descr_ws/src/yang_tools/system-library-data.json"
-        yang_modules_folder = "/home/martzi/component_descr_ws/src/yang_tools/yang_modules"
-        xml_instance_file = "/home/martzi/component_descr_ws/yang_content.xml"
-        # json_instance_file = "/home/martzi/component_descr_ws/src/yang_tools/yang_instance_data.json"
-        json_instance_file = "/home/martzi/component_descr_ws/src/yang_tools/instance_data.json"
 
         # Create and use the YangValidator class
         self.json_validation_against_yang(json_instance_file, yang_library_data, yang_modules_folder)
+
+        self.get_logger().info("Validation is Done!")
+
 
 def main(args=None):
     rclpy.init(args=args)
