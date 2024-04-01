@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:robot-network"
-       xmlns:nt="urn:robot-network-topology"
-       xmlns:l1t="urn:layer1"
-       xmlns:l2t="urn:layer2"
+       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
        name="mikrotik_hap">
     
     <xacro:include filename="$(find interface-description)/urdf/wifi5.urdf.xacro"/>
@@ -13,20 +10,18 @@
     <xacro:macro name="mikrotik_hap" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=mikrotik_hap_L2 L1_id:=mikrotik_hap_L1">
         <yang>
             <!-- Mikrotik L2 network topology -->
-            <nw:network>
-                <nw:network-id>${L2_network_id}</nw:network-id>
-                <nw:network-types>
-                    <l2t:l2-topology/>
-                </nw:network-types>
-                <nw:supporting-network>
-                    <nw:network-ref>${L1_network_id}</nw:network-ref>
-                </nw:supporting-network>
-                <nw:node>
-                    <nw:node-id>${L2_id}</nw:node-id>
-                    <nw:supporting-node>
-                        <nw:network-ref>${L1_network_id}</nw:network-ref>
-                        <nw:node-ref>${L1_id}</nw:node-ref>
-                    </nw:supporting-node>
+            <network>
+                <network-id>${L2_network_id}</network-id>
+                <supporting-network>
+                    <network-ref>${L1_network_id}</network-ref>
+                    <tf-parent>${parent}</tf-parent>
+                </supporting-network>
+                <node>
+                    <node-id>${L2_id}</node-id>
+                    <supporting-node>
+                        <network-ref>${L1_network_id}</network-ref>
+                        <node-ref>${L1_id}</node-ref>
+                    </supporting-node>
                     <xacro:cat6_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
                     <xacro:cat6_L2 id="eth_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_2"/>
                     <xacro:cat6_L2 id="eth_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_3"/>
@@ -34,20 +29,17 @@
                     <xacro:cat6_L2 id="eth_5" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_5"/>
                     <xacro:wifi5_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
                     <xacro:wifi4_L2 id="wireless_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_2"/>
-                </nw:node>
-            </nw:network>
+                </node>
+            </network>
 
             <!-- Mikrotik L1 network topology -->
-            <nw:network>
-                <nw:network-id>${L1_network_id}</nw:network-id>
-                <nw:network-types>
-                    <l1t:l1-topology/>
-                </nw:network-types>
-                <nw:node>
-                    <nw:node-id>${L1_id}</nw:node-id>
-                    <l1t:l1-node-attributes>
-                        <l1t:device-type>router</l1t:device-type>
-                    </l1t:l1-node-attributes>
+            <network>
+                <network-id>${L1_network_id}</network-id>
+                <node>
+                    <node-id>${L1_id}</node-id>
+                    <layer1:l1-node-attributes>
+                        <device-type>router</device-type>
+                    </layer1:l1-node-attributes>
                     <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
                     <xacro:cat6_L1 id="eth_2" connector_type="rj45" connector_format="female"/>
                     <xacro:cat6_L1 id="eth_3" connector_type="rj45" connector_format="female"/>
@@ -55,8 +47,8 @@
                     <xacro:cat6_L1 id="eth_5" connector_type="rj45" connector_format="female"/>
                     <xacro:wifi5_L1 id="wireless_1" connector_type="wireless" connector_format="wifi_5"/>
                     <xacro:wifi4_L1 id="wireless_2" connector_type="wireless" connector_format="wifi_4"/>
-                </nw:node>
-            </nw:network>
+                </node>
+            </network>
         </yang>
     </xacro:macro>
 </robot>

@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:robot-network"
-       xmlns:nt="urn:robot-network-topology"
-       xmlns:l1t="urn:layer1"
-       xmlns:l2t="urn:layer2"
+       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1" 
        name="nuc">
    
     <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
@@ -40,20 +37,18 @@
 
         <yang>
             <!-- NUC L2 network topology -->
-            <nw:network>
-                <nw:network-id>${L2_network_id}</nw:network-id>
-                <nw:network-types>
-                    <l2t:l2-topology/>
-                </nw:network-types>
-                <nw:supporting-network>
-                    <nw:network-ref>${L1_network_id}</nw:network-ref>
-                </nw:supporting-network>
-                <nw:node>
-                    <nw:node-id>${L2_id}</nw:node-id>
-                    <nw:supporting-node>
-                        <nw:network-ref>${L2_id}</nw:network-ref>
-                        <nw:node-ref>${L1_id}</nw:node-ref>
-                    </nw:supporting-node>
+            <network>
+                <network-id>${L2_network_id}</network-id>
+                <supporting-network>
+                    <network-ref>${L1_network_id}</network-ref>
+                    <tf-parent>${parent}</tf-parent>
+                </supporting-network>
+                <node>
+                    <node-id>${L2_id}</node-id>
+                    <supporting-node>
+                        <network-ref>${L2_id}</network-ref>
+                        <node-ref>${L1_id}</node-ref>
+                    </supporting-node>
                     <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
                     <xacro:usb30_L2 id="usb_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_2"/>
                     <xacro:usb30_L2 id="usb_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_3"/>
@@ -61,20 +56,17 @@
                     <xacro:usb30_L2 id="usb_5" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_3"/>
                     <xacro:cat6_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
                     <xacro:wifi5_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
-                </nw:node>
-            </nw:network>
+                </node>
+            </network>
 
             <!-- NUC L1 network topology -->
-            <nw:network>
-                <nw:network-id>${L1_network_id}</nw:network-id>
-                <nw:network-types>
-                    <l1t:l1-topology/>
-                </nw:network-types>
-                <nw:node>
-                    <nw:node-id>${L1_id}</nw:node-id>
-                    <l1t:l1-node-attributes>
-                        <l1t:device-type>pc</l1t:device-type>
-                    </l1t:l1-node-attributes>
+            <network>
+                <network-id>${L1_network_id}</network-id>
+                <node>
+                    <node-id>${L1_id}</node-id>
+                    <layer1:l1-node-attributes>
+                        <device-type>pc</device-type>
+                    </layer1:l1-node-attributes>
                     <xacro:usb30_L1 id="usb_1" connector_type="usb-std_A" connector_format="female"/>
                     <xacro:usb30_L1 id="usb_2" connector_type="usb-std_A" connector_format="female"/>
                     <xacro:usb30_L1 id="usb_3" connector_type="usb-std_A" connector_format="female"/>
@@ -82,8 +74,8 @@
                     <xacro:usb30_L1 id="usb_5" connector_type="usb-type_C" connector_format="female"/>
                     <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
                     <!-- <xacro:wifi5_L1 id="wireless_1" connector-type="wireless" connector_format="wireless"/> -->
-                </nw:node>
-            </nw:network>
+                </node>
+            </network>
         </yang>
     </xacro:macro>
 </robot>

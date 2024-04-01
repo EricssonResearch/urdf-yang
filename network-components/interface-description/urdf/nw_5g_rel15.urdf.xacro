@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:nw="urn:robot-network"
-       xmlns:nt="urn:robot-network-topology"
-       xmlns:l1t="urn:layer1"
-       xmlns:l2t="urn:layer2"
+       xmlns:robot-network-topology="urn:ietf:params:xml:ns:yang:robot-network-topology"
+       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
+       xmlns:layer2="urn:ietf:params:xml:ns:yang:layer2"
        name="nw_5g_rel15">
 
     <xacro:property name="nw_5g_rel15_yaml_file" value="$(find interface-description)/config/nw_5g_rel15.yaml" />
@@ -23,28 +22,28 @@
     <xacro:property name="nw_5g_rel15_security_level" value="${nw_5g_rel15_props['wireless-connection']['security-level']}"/>
 
     <xacro:macro name="nw_5g_rel15_L2" params="id supporting_network supporting_node supporting_tp">
-        <nt:termination-point>
-            <nt:tp-id>${id}</nt:tp-id>
-            <nt:supporting-termination-point>
-                <nt:network-ref>${supporting_network}</nt:network-ref>
-                <nt:node-ref>${supporting_node}</nt:node-ref>
-                <nt:tp-ref>${supporting_tp}</nt:tp-ref>
-            </nt:supporting-termination-point>
-            <l2t:l2-termination-point-attributes>
-                <l2t:bandwidth>${nw_5g_rel15_bandwidth}</l2t:bandwidth>
-                <l2t:jitter>${nw_5g_rel15_jitter}</l2t:jitter>
-            </l2t:l2-termination-point-attributes>
-        </nt:termination-point>
+        <robot-network-topology:termination-point>
+            <tp-id>${id}</tp-id>
+            <supporting-termination-point>
+                <network-ref>${supporting_network}</network-ref>
+                <node-ref>${supporting_node}</node-ref>
+                <tp-ref>${supporting_tp}</tp-ref>
+            </supporting-termination-point>
+            <layer2:l2-termination-point-attributes>
+                <bandwidth>${nw_5g_rel15_bandwidth}</bandwidth>
+                <jitter>${nw_5g_rel15_jitter}</jitter>
+            </layer2:l2-termination-point-attributes>
+        </robot-network-topology:termination-point>
     </xacro:macro>
 
     <xacro:macro name="nw_5g_rel15_L1" params="id connector_type connector_format">
-        <nt:termination-point>
-            <nt:tp-id>${id}</nt:tp-id>
-            <l1t:l1-termination-point-attributes>
-                <l1t:connector-type>${connector_type}</l1t:connector-type>
-                <l1t:connector-format>${connector_format}</l1t:connector-format>
-            </l1t:l1-termination-point-attributes>
-        </nt:termination-point>
+        <robot-network-topology:termination-point>
+            <tp-id>${id}</tp-id>
+            <layer1:l1-termination-point-attributes>
+                <connector-type>${connector_type}</connector-type>
+                <connector-format>${connector_format}</connector-format>
+            </layer1:l1-termination-point-attributes>
+        </robot-network-topology:termination-point>
     </xacro:macro>
 
 </robot>
