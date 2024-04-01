@@ -212,6 +212,22 @@ module ietf-inet-types {
        format";
   }
 
+  typedef mac-address {
+    type string {
+      pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}';
+    }
+    description
+      "The mac-address type represents an IEEE 802 MAC address.
+       The canonical representation uses lowercase characters.
+
+       In the value set and its semantics, this type is equivalent
+       to the MacAddress textual convention of the SMIv2.";
+    reference
+      "IEEE 802: IEEE Standard for Local and Metropolitan Area
+                 Networks: Overview and Architecture
+       RFC 2579: Textual Conventions for SMIv2";
+  }
+
   typedef ipv6-address {
     type string {
       pattern '((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}'
@@ -354,11 +370,11 @@ module ietf-inet-types {
 
   typedef domain-name {
     type string {
+      length "1..253";
       pattern
         '((([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.)*'
       + '([a-zA-Z0-9_]([a-zA-Z0-9\-_]){0,61})?[a-zA-Z0-9]\.?)'
       + '|\.';
-      length "1..253";
     }
     description
      "The domain-name type represents a DNS domain name.  The

@@ -1,11 +1,14 @@
-module network-topology {
+module robot-network-topology {
     yang-version 1.1;
-    namespace "urn:network-topology";
-    prefix "nt";
+    namespace "urn:ietf:params:xml:ns:yang:robot-network-topology";
+    prefix "rnt";
 
-    import network {
-        prefix "nw";
+    import robot-network {
+        prefix "rnw";
     }
+
+    organization
+        "HSN-Lab & Ericsson Research Hungary";
 
     contact
         "Editor:    Attila Vidacs";
@@ -39,6 +42,13 @@ module network-topology {
             node that contains the termination point.";
     }
 
+    typedef tf-parent {
+        type string;
+        description
+          "This identifier shows the parent of the object in the
+           transformation tree";
+    }
+
     grouping link-ref {
         description
             "This grouping can be used to reference a link in a specific
@@ -46,8 +56,8 @@ module network-topology {
             defined here for the convenience of augmenting modules.";
         leaf link-ref {
             type leafref {
-                path "/nw:networks/nw:network[nw:network-id=current()/../"+
-                    "network-ref]/nt:link/nt:link-id";
+                path "/rnw:networks/rnw:network[rnw:network-id=current()/../"+
+                    "network-ref]/rnt:link/nt:link-id";
                 require-instance false;
             }
             description
@@ -55,7 +65,7 @@ module network-topology {
                 (This type should not be used for relative references.
                 In such a case, a relative path should be used instead.)";
         }
-        uses nw:network-ref;
+        uses rnw:network-ref;
     }
 
     grouping tp-ref {
@@ -66,9 +76,9 @@ module network-topology {
             modules.";
         leaf tp-ref {
             type leafref {
-                path "/nw:networks/nw:network[nw:network-id=current()/../"+
-                    "network-ref]/nw:node[nw:node-id=current()/../"+
-                    "node-ref]/nt:termination-point/nt:tp-id";
+                path "/rnw:networks/rnw:network[rnw:network-id=current()/../"+
+                    "network-ref]/rnw:node[rnw:node-id=current()/../"+
+                    "node-ref]/rnt:termination-point/rnt:tp-id";
                 require-instance false;
             }
             description
@@ -76,10 +86,10 @@ module network-topology {
                 (This type should not be used for relative references.
                 In such a case, a relative path should be used instead.)";
         }
-        uses nw:node-ref;
+        uses rnw:node-ref;
     }
 
-    augment "/nw:networks/nw:network" {
+    augment "/rnw:networks/rnw:network" {
         description
             "Add links to the network data model.";
         list link {
@@ -94,23 +104,25 @@ module network-topology {
                     "The identifier of a link in the topology.
                     A link is specific to a topology to which it belongs.";
             }
-            container source {
+            list source {
                 description
                     "This container holds the logical source of a particular
                     link.";
                 leaf source-node {
                     type leafref {
-                        path "../../../nw:node/nw:node-id";
-                        require-instance true;
+                        path "../../../rnw:node/rnw:node-id";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "Source node identifier.  Must be in the same topology.";
                 }
                 leaf source-tp {
                     type leafref {
-                        path "../../../nw:node[nw:node-id=current()/../"+
-                            "source-node]/termination-point/tp-id";
-                        require-instance true;
+                        path "../../../rnw:node[rnw:node-id=current()/../"+
+                            "source-node]/rnt:termination-point/tp-id";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "This termination point is located within the source node
@@ -118,14 +130,15 @@ module network-topology {
                 }
             }
 
-            container destination {
+            list destination {
                 description
                     "This container holds the logical destination of a
                     particular link.";
                 leaf dest-node {
                     type leafref {
-                        path "../../../nw:node/nw:node-id";
-                        require-instance true;
+                        path "../../../rnw:node/rnw:node-id";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "Destination node identifier.  Must be in the same
@@ -133,9 +146,10 @@ module network-topology {
                 }
                 leaf dest-tp {
                     type leafref {
-                        path "../../../nw:node[nw:node-id=current()/../"+
-                            "dest-node]/termination-point/tp-id";
-                        require-instance true;
+                        path "../../../rnw:node[rnw:node-id=current()/../"+
+                            "dest-node]/rnt:termination-point/tp-id";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "This termination point is located within the
@@ -148,8 +162,9 @@ module network-topology {
                     "Identifies the link or links on which this link depends.";
                 leaf network-ref {
                     type leafref {
-                        path "../../../nw:supporting-network/nw:network-ref";
-                    require-instance true;
+                        path "../../../rnw:supporting-network/rnw:network-ref";
+                    // require-instance true;
+                    require-instance false;
                     }
                     description
                         "This leaf identifies in which underlay topology
@@ -158,9 +173,10 @@ module network-topology {
 
                 leaf link-ref {
                     type leafref {
-                        path "/nw:networks/nw:network[nw:network-id=current()/"+
+                        path "/rnw:networks/rnw:network[rnw:network-id=current()/"+
                             "../network-ref]/link/link-id";
-                        require-instance true;
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "This leaf identifies a link that is a part
@@ -172,7 +188,105 @@ module network-topology {
         }
     }
 
-    augment "/nw:networks/nw:network/nw:node" {
+    augment "/rnw:networks/rnw:network"{
+        description
+            "Augments network with high-level
+            control loop parameters that serve as
+            a basis of agility score calculation";
+
+
+        list control-loop {
+            key
+            "control-loop-id";
+            description
+            "base control loop parameters";
+            leaf control-loop-id {
+                type uint32;
+                description
+                "Identifier for the control loop";
+            }
+            leaf containing-link-ids {
+                type string;
+                description
+                "Comma-separated list of containing link IDs";
+            }
+            leaf latency {
+                type uint32;
+                description
+                "Latency requirement for the control loop";
+            }
+            leaf cycle-time {
+                type uint32;
+                description
+                "Time taken to complete one control loop cycle";
+            }
+            leaf frequency {
+                type uint32;
+                description
+                "Time taken to complete one control loop cycle";
+            }
+            leaf accuracy {
+                type decimal64{
+                    fraction-digits 2;
+                }
+                description
+                "Degree of accuracy required for control loop operations";
+            }
+            leaf payload-capacity {
+                type uint32;
+                description
+                "Maximum payload capacity for the robot";
+            }
+            leaf reach {
+                type uint32;
+                description
+                "Maximum reach or operational distance of the robot";
+            }
+            // leaf safety-features {
+            //     type boolean;
+            //     description
+            //     "Whether the robot includes advanced safety features";
+            // }
+            leaf safety-features {
+                type uint32;
+                description
+                "Whether the robot includes advanced safety features";
+            }
+
+            leaf maintenance-requirements {
+                type enumeration {
+                    enum "low" {
+                        description
+                        "Low maintenance requirements";
+                    }
+                    enum "medium" {
+                        description
+                        "Medium maintenance requirements";
+                    }
+                    enum "high" {
+                        description
+                        "High maintenance requirements";
+                    }
+                }
+                description
+                "Level of maintenance required for the robot";
+            }
+
+            leaf environment {
+                type string;
+                description
+                "Environmental conditions for the robot (e.g., cleanroom, foundry)";
+            }
+
+            leaf safety-standard-compliance {
+                type string;
+                description
+                "Safety standard compliance for the robot";
+            }
+        }
+    }
+
+    augment "/rnw:networks/rnw:network/rnw:node" {
         description
             "Augments termination points that terminate links.
             Termination points can ultimately be mapped to interfaces.";
@@ -202,8 +316,9 @@ module network-topology {
 
                 leaf network-ref {
                     type leafref {
-                        path "../../../nw:supporting-node/nw:network-ref";
-                        require-instance true;
+                        path "../../../rnw:supporting-node/rnw:network-ref";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "This leaf identifies in which topology the
@@ -211,8 +326,9 @@ module network-topology {
                 }
                 leaf node-ref {
                     type leafref {
-                        path "../../../nw:supporting-node/nw:node-ref";
-                    require-instance true;
+                        path "../../../rnw:supporting-node/rnw:node-ref";
+                    // require-instance true;
+                    require-instance false;
                     }
                     description
                         "This leaf identifies in which node the supporting
@@ -220,10 +336,11 @@ module network-topology {
                 }
                 leaf tp-ref {
                     type leafref {
-                        path "/nw:networks/nw:network[nw:network-id=current()/"+
-                            "../network-ref]/nw:node[nw:node-id=current()/../"+
-                            "node-ref]/termination-point/tp-id";
-                        require-instance true;
+                        path "/rnw:networks/rnw:network[rnw:network-id=current()/"+
+                            "../network-ref]/rnw:node[rnw:node-id=current()/../"+
+                            "node-ref]/rnt:termination-point/tp-id";
+                        // require-instance true;
+                        require-instance false;
                     }
                     description
                         "Reference to the underlay node (the underlay node must

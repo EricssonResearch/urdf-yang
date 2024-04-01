@@ -1,7 +1,16 @@
 module robot-network {
     yang-version 1.1;
-    namespace "urn:robot-network";
-    prefix "nw";
+    namespace "urn:ietf:params:xml:ns:yang:robot-network";
+    prefix "rnw";
+
+    organization
+      "HSN-Lab & Ericsson Research Hungary";
+
+    contact
+      "Editor:  Marcell Balogh";
+
+    description
+      "This module defines a model for L1 (physical) networking.";
 
     revision 2023-04-20 {
         description
@@ -23,13 +32,19 @@ module robot-network {
             to indicate the type of network.";
     }
 
+    typedef tf-parent {
+        type string;
+        description
+            "Parent transformation link of an object.";
+    }
+
     grouping network-ref {
         description
             "Contains the information necessary to reference a network --
             for example, an underlay network.";
         leaf network-ref {
             type leafref {
-                path "/nw:networks/nw:network/nw:network-id";
+                path "/rnw:networks/rnw:network/rnw:network-id";
                 require-instance false;
             }
             description
@@ -43,8 +58,8 @@ module robot-network {
             "Contains the information necessary to reference a node.";
         leaf node-ref {
             type leafref {
-                path "/nw:networks/nw:network[nw:network-id=current()/../"+
-                "network-ref]/nw:node/nw:node-id";
+                path "/rnw:networks/rnw:network[rnw:network-id=current()/../"+
+                "network-ref]/rnw:node/rnw:node-id";
                 require-instance false;
             }
             description
@@ -55,10 +70,10 @@ module robot-network {
         uses network-ref;
     }
 
-    container networks {
+    list networks {
         description "Robot System";
         list network {
-            key "network-id";
+            // key "network-id";
             description
                 "Describes a network.
                 A network typically contains an inventory of nodes,
@@ -82,11 +97,19 @@ module robot-network {
                     topologies.";
                 leaf network-ref {
                     type leafref {
-                        path "/nw:networks/nw:network/nw:network-id";
+                        path "/rnw:networks/rnw:network/rnw:network-id";
                     require-instance false;
                 }
                     description
                         "References the underlay network.";
+                }
+
+                leaf tf-parent{
+                    type tf-parent{
+                    require-instance false;
+                }
+                description
+                    "transformation parent link";
                 }
             }
 
@@ -108,7 +131,7 @@ module robot-network {
                         structure.";
                     leaf network-ref {
                         type leafref {
-                            path "../../../nw:supporting-network/nw:network-ref";
+                            path "../../../rnw:supporting-network/rnw:network-ref";
                         require-instance false;
                         }
                         description
@@ -117,7 +140,7 @@ module robot-network {
                     }
                     leaf node-ref {
                         type leafref {
-                            path "/nw:networks/nw:network/nw:node/nw:node-id";
+                            path "/rnw:networks/rnw:network/rnw:node/rnw:node-id";
                             require-instance false;
                         }
                         description

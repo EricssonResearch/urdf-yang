@@ -1,6 +1,6 @@
 module component-connections {
     yang-version 1.1;
-    namespace "urn:component-connections";
+    namespace "urn:ietf:params:xml:ns:yang:component-connections";
     prefix "cc";
 
     // Import IETF standard modules
@@ -8,13 +8,30 @@ module component-connections {
         prefix "inet";
     }
 
+    organization
+      "HSN-Lab & Ericsson Research Hungary";
+
+    contact
+      "Editor:  Marcell Balogh";
+
+    description
+      "This module defines a model for L1 (physical) networking.";
+
+    revision 2023-04-20 {
+        description
+          "Initial revision.";
+        reference
+          "RFC 8345: A YANG Data Model for Network Topologies";
+    }
+
     // Container for representing component connections
     container component {
-
-        // List of connections, each uniquely identified by 'id'
+        description
+            "Container for representing component connections";
         list connection {
             key id;
-
+            description
+                "List of connections, each uniquely identified by 'id'";
             // Unique identifier for the connection
             leaf id {
                 type string;
@@ -24,6 +41,8 @@ module component-connections {
 
             // Container for Layer 1 (physical) connection parameters
             container layer1-connection {
+                description
+                    "Container for Layer 1 (physical) connection parameters";
                 // Source IPv4 address
                 leaf source-ip {
                     type inet:ipv4-address;
@@ -63,9 +82,9 @@ module component-connections {
                 }
             }
 
-            // Container for Layer 2 (logical) connection parameters
             container layer2-connection {
-                // Protocol for Layer 2 connection (e.g., TCP, UDP)
+                description
+                    "Container for Layer 2 (logical) connection parameters";
                 leaf protocol {
                     type identityref {
                         base connection-protocols;
@@ -117,5 +136,12 @@ module component-connections {
         base connection-protocols;
         description
           "User Datagram Protocol (UDP)";
+    }
+    
+    // Identity for Multi-Path TCP (MPTCP)
+    identity mptcp {
+        base connection-protocols;
+        description
+          "Multi-Path TCP (MPTCP)";
     }
 }
