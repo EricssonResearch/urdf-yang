@@ -1,19 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:rcl="urn:robot-control-loop"
-       xmlns:nw="urn:robot-network"
-       xmlns:nt="urn:robot-network-topology"
-       xmlns:l1t="urn:layer1"
-       xmlns:l2t="urn:layer2"
+       xmlns:robot-network-topology="urn:ietf:params:xml:ns:yang:robot-network-topology"
        name="closed-control-loop">
 
     <xacro:macro name="closed-control-loop" params="control_loop_id supporting_links latency cycle_time frequency payload_capacity reach safety_features maintenance_requirements environment safety_standard_compliance">
 
         <yang>
             <!-- robot-control-loop -->
-            <rcl:control-loops>
+            <network>
+            <network-id>control_loop_level</network-id>
+            <robot-network-topology:control-loop>
 
-                <rcl:control-loop-id>${control_loop_id}</rcl:control-loop-id>
+                <control-loop-id>${control_loop_id}</control-loop-id>
                 <containing-link-ids>${supporting_links}</containing-link-ids>
                 <latency>${latency}</latency>
                 <cycle-time>${cycle_time}</cycle-time>
@@ -26,7 +24,9 @@
                 <environment>${environment}</environment>
                 <safety-standard-compliance>${safety_standard_compliance}</safety-standard-compliance>
 
-            </rcl:control-loops>
+            </robot-network-topology:control-loop>
+
+            </network>
         </yang>
 
     </xacro:macro>
