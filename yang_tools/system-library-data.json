@@ -1,0 +1,37 @@
+{
+    "ietf-yang-library:modules-state": {
+        "module-set-id": "9a9b7d2d28d4d78fa42e12348346990e3fa1c1b1",
+        "module": [
+            {
+                "name": "layer1",
+                "namespace": "urn:ietf:params:xml:ns:yang:layer1",
+                "revision": "2023-04-26",
+                "conformance-type": "implement"
+            },
+            {
+                "name": "layer2",
+                "namespace": "urn:ietf:params:xml:ns:yang:layer2",
+                "revision": "2023-05-04",
+                "conformance-type": "implement"
+            },
+            {
+                "name": "robot-network-topology",
+                "namespace": "urn:ietf:params:xml:ns:yang:robot-network-topology",
+                "revision": "2023-04-20",
+                "conformance-type": "implement"
+            },
+            {
+                "name": "robot-network",
+                "namespace": "urn:ietf:params:xml:ns:yang:robot-network",
+                "revision": "2023-04-20",
+                "conformance-type": "implement"
+            },
+            {
+                "name": "ietf-inet-types",
+                "namespace": "urn:ietf:params:xml:ns:yang:ietf-inet-types",
+                "revision": "2013-07-15",
+                "conformance-type": "implement"
+            }
+        ]
+    }
+}
