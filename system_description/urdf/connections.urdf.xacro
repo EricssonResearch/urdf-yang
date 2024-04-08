@@ -4,14 +4,13 @@
        xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
        name="topology-link">
 
-    <xacro:macro name="topology-link" params="topology_link_id src_node src_tp dst_node dst_tp conn_type reconfig">
+    <xacro:macro name="topology-link" params="src_node src_tp dst_node dst_tp conn_type reconfig">
 
         <yang>
             <!-- robot-network-topology-link -->
             <network>
             <network-id>topology_level</network-id>
                 <robot-network-topology:link>
-                    <link-id>${topology_link_id}</link-id>
                     <robot-network-topology:link-id>${src_node}-${dst_node}-link</robot-network-topology:link-id>
                     <layer1:l1-link-attributes>
                         <type>${conn_type}</type>

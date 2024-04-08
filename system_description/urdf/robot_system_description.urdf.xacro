@@ -153,17 +153,17 @@
    <!-- link radiodot with world -->
    <xacro:radiodot parent="world"/>
 
-   <xacro:topology-link topology_link_id="1" src_node="poe-switch" src_tp="eth_1" dst_node="mikrotik" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="2" src_node="mikrotik" src_tp="eth_2" dst_node="rpi4" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="3" src_node="realsense-d455i" src_tp="usb_1" dst_node="nuc" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="4" src_node="nuc" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_2" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="5" src_node="rg2ft-computebox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_3" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="6" src_node="rg2ft-computebox" src_tp="prop_1" dst_node="rg2ft-gripper" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="7" src_node="ur3e-controlbox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_4" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="8" src_node="ur3e-controlbox" src_tp="prop_1" dst_node="ur3e-arm" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="9" src_node="5g-modem" src_tp="usb_1" dst_node="rpi4" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
-   <xacro:topology-link topology_link_id="10" src_node="5g-modem" src_tp="wireless_1" dst_node="5g-dot" dst_tp="wireless_1" conn_type="wireless" reconfig="sw_supported"/>
-   <xacro:topology-link topology_link_id="11" src_node="5g-dot" src_tp="eth_1" dst_node="flightrack" dst_tp="eth_1" conn_type="wired" reconfig="sw_supported"/>
+   <xacro:topology-link src_node="poe-switch" src_tp="eth_1" dst_node="mikrotik" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="mikrotik" src_tp="eth_2" dst_node="rpi4" dst_tp="eth_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="realsense-d455i" src_tp="usb_1" dst_node="nuc" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="nuc" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_2" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_3" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="rg2ft-computebox" src_tp="prop_1" dst_node="rg2ft-gripper" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="eth_1" dst_node="poe-switch" dst_tp="eth_4" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="ur3e-controlbox" src_tp="prop_1" dst_node="ur3e-arm" dst_tp="prop_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="usb_1" dst_node="rpi4" dst_tp="usb_1" conn_type="wired" reconfig="hw_supported"/>
+   <xacro:topology-link src_node="5g-modem" src_tp="wireless_1" dst_node="5g-dot" dst_tp="wireless_1" conn_type="wireless" reconfig="sw_supported"/>
+   <xacro:topology-link src_node="5g-dot" src_tp="eth_1" dst_node="flightrack" dst_tp="eth_1" conn_type="wired" reconfig="sw_supported"/>
 
    <xacro:closed-control-loop 
       control_loop_id="1" 
