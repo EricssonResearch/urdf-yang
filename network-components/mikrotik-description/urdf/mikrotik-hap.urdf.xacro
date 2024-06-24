@@ -22,7 +22,7 @@
                         <network-ref>${L1_network_id}</network-ref>
                         <node-ref>${L1_id}</node-ref>
                     </supporting-node>
-                    <xacro:cat6_L2 id="eth_1 " supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
+                    <xacro:cat6_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
                     <xacro:cat6_L2 id="eth_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_2"/>
                     <xacro:cat6_L2 id="eth_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_3"/>
                     <xacro:cat6_L2 id="eth_4" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_4"/>
