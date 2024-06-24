@@ -1921,7 +1921,7 @@
 					<node-ref>mikrotik_L1</node-ref>
 				</supporting-node>
 				<robot-network-topology:termination-point>
-					<tp-id>eth_1 </tp-id>
+					<tp-id>eth_1</tp-id>
 					<supporting-termination-point>
 						<network-ref>mikrotik_device_level</network-ref>
 						<node-ref>mikrotik_L1</node-ref>
