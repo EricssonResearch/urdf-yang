@@ -2514,49 +2514,4 @@
 			</robot-network-topology:link>
 		</robot-network:networks>
 	</yang>
-	<yang>
-		<!-- robot-control-loop -->
-		<robot-network:networks>
-			<network-id>control_loop_level</network-id>
-			<robot-network-topology:control-loop>
-				<control-loop-id>1</control-loop-id>
-				<containing-link-ids>nuc-poe-switch-link,                            poe-switch-mikrotik-link,                            mikrotik-rpi4-link,                            nw-5g-modem-rpi4-link,                            nw-5g-modem-5g-dot-link,                            nw-5g-modem-rpi4-link,                            nw-5g-modem-5g-dot-link,                            5g-dot-flightrack-link</containing-link-ids>
-				<latency>2</latency>
-				<cycle-time>100</cycle-time>
-				<frequency>500</frequency>
-				<payload-capacity>3000</payload-capacity>
-				<reach>3</reach>
-				<!-- <end-effector-type>${end_effector_type}</end-effector-type> -->
-				<safety-features>0</safety-features>
-				<maintenance-requirements>medium</maintenance-requirements>
-				<environment>cleanroom</environment>
-				<safety-standard-compliance>ISO10218</safety-standard-compliance>
-			</robot-network-topology:control-loop>
-		</robot-network:networks>
-	</yang>
-	<!-- NOTE -->
-	<!-- fel kell sorolni a linkeket mert a-bol b-be több úton is el lehet majd jutni -->
-	<!-- link requestet kell tudnia kezelni, ami alapján NEF tud működni -->
-	<!-- menet közben változó igények kezelése? -> on demand reconfiguration -->
-	<!-- yang modulba if feature-eket felvinni, különböző qos szintekre milyen követelményekhez minek kell teljesülnie -->
-	<yang>
-		<!-- robot-control-loop -->
-		<robot-network:networks>
-			<network-id>control_loop_level</network-id>
-			<robot-network-topology:control-loop>
-				<control-loop-id>2</control-loop-id>
-				<containing-link-ids>nuc-poe-switch-link,                            poe-switch-mikrotik-link,                            mikrotik-rpi4-link,                            nw-5g-modem-rpi4-link,                            nw-5g-modem-5g-dot-link,                            5g-dot-flightrack-link</containing-link-ids>
-				<latency>22</latency>
-				<cycle-time>1002</cycle-time>
-				<frequency>5002</frequency>
-				<payload-capacity>3000</payload-capacity>
-				<reach>3</reach>
-				<!-- <end-effector-type>${end_effector_type}</end-effector-type> -->
-				<safety-features>1</safety-features>
-				<maintenance-requirements>medium</maintenance-requirements>
-				<environment>cleanroom</environment>
-				<safety-standard-compliance>ISO102182</safety-standard-compliance>
-			</robot-network-topology:control-loop>
-		</robot-network:networks>
-	</yang>
 </robot>
