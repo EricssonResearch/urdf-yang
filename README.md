@@ -10,7 +10,8 @@
 | HEBI Robotics | X-series | :hourglass: | [README] | | in progress... |
 | Intel RealSense cameras| D4xx series | :white_check_mark: | [README](./realsense-ros-nw_arch/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) |  |
 | Mobile Industrial Robots | MiR100 | :hourglass: | [README] | [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) | in progress... |
-| KUKA Robotics | lrbr/KR series | :hourglass: | [README] | | in progress... 
+| KUKA Robotics | lrbr series | :hourglass: | [README] | | in progress... 
+| KUKA Robotics | KR series | :white_check_mark: | [README] | | KR 10 R1100-2
 | Franka Robotics | Franka robots | :hourglass: | [README] | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) | in progress... 
 
 
