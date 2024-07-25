@@ -5,3 +5,9 @@
 [submodule "realsense-ros-nw_arch"]
 	path = realsense-ros-nw_arch
 	url = https://github.com/Martzi/realsense-ros-nw_arch.git
+[submodule "hebi_yang_description"]
+	path = hebi_yang_description
+	url = https://github.com/hsnlab-iot/hebi_yang_description.git
+[submodule "kuka_robot_descriptions_nw_arch"]
+	path = kuka_robot_descriptions_nw_arch
+	url = https://github.com/Martzi/kuka_robot_descriptions_nw_arch.git
