@@ -23,6 +23,7 @@
 | Radio dot | general | :white_check_mark: | [README](./network-components/radiodot_description/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
 | Raspberry Pi | 4 model B | :white_check_mark: | [README](./network-components/raspi4b-description/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
 | MikroTik | hAP ac2 | :white_check_mark: | [README](./network-components/mikrotik-description/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
+| TP-Link | TL-SG1005P | :white_check_mark: | [README](./network-components/poesw-description/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
 
 ## Networked robot system example
 
