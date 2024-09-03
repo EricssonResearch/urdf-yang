@@ -5,13 +5,13 @@
 
 | **Vendor**  | **Model** | **Status** | **Package** | **Applicable license** | **Note** |
 | ----------- | --------- | ---------- | -------- | ---------------------- | -------------- |
-| Universal Robots | URx/URx-e series| :white_check_mark: | [README](./robot-components/Universal_Robots_ROS2_Description_nw_arch/README.md) | [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) | + control box |
-| OnRobot grippers| RG2-FT | :white_check_mark: | [README](./robot-components/onrobot_driver/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
-| HEBI Robotics | X-series |  :white_check_mark: | [README](./robot-components/hebi_yang_description/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)  | |
-| Intel RealSense cameras| D4xx series | :white_check_mark: | [README](./robot-components/realsense-ros-nw_arch/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) |  |
+| Universal Robots | URx/URx-e series| :white_check_mark: | [README](https://github.com/Martzi/Universal_Robots_ROS2_Description_nw_arch/blob/humble/README.md) | [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) | + control box |
+| OnRobot grippers| RG2-FT | :white_check_mark: | [README](https://github.com/hsnlab-iot/onrobot_driver/blob/main/README.md) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) | |
+| HEBI Robotics | X-series |  :white_check_mark: | [README](https://github.com/hsnlab-iot/hebi_yang_description/blob/master/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)  | |
+| Intel RealSense cameras| D4xx series | :white_check_mark: | [README](https://github.com/Martzi/realsense-ros-nw_arch/blob/ros2-development/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) |  |
 | Mobile Industrial Robots | MiR100 | :hourglass: | [README] | [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) | |
 | KUKA Robotics | lrbr series | :hourglass: | [README] | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) |  
-| KUKA Robotics | KR series | :white_check_mark: | [README](./robot-components/kuka_robot_descriptions_nw_arch/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) | + control box |
+| KUKA Robotics | KR series | :white_check_mark: | [README](https://github.com/Martzi/kuka_robot_descriptions_nw_arch/blob/master/README.md) | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) | + control box |
 | Franka Robotics | Franka robots | :hourglass: | [README] | [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) | in progress... 
 
 
