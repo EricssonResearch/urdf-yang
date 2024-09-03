@@ -1,13 +1,13 @@
-[submodule "Universal_Robots_ROS2_Description_nw_arch"]
-	path = Universal_Robots_ROS2_Description_nw_arch
+[submodule "robot-components/realsense-ros-nw_arch"]
+	path = robot-components/realsense-ros-nw_arch
+	url = https://github.com/Martzi/realsense-ros-nw_arch.git
+[submodule "robot-components/hebi_yang_description"]
+	path = robot-components/hebi_yang_description
+	url = https://github.com/hsnlab-iot/hebi_yang_description.git
+[submodule "robot-components/kuka_robot_descriptions_nw_arch"]
+	path = robot-components/kuka_robot_descriptions_nw_arch
+	url = https://github.com/Martzi/kuka_robot_descriptions_nw_arch.git
+[submodule "robot-components/Universal_Robots_ROS2_Description_nw_arch"]
+	path = robot-components/Universal_Robots_ROS2_Description_nw_arch
 	url = https://github.com/Martzi/Universal_Robots_ROS2_Description_nw_arch.git
 	branch = humble
-[submodule "realsense-ros-nw_arch"]
-	path = realsense-ros-nw_arch
-	url = https://github.com/Martzi/realsense-ros-nw_arch.git
-[submodule "hebi_yang_description"]
-	path = hebi_yang_description
-	url = https://github.com/hsnlab-iot/hebi_yang_description.git
-[submodule "kuka_robot_descriptions_nw_arch"]
-	path = kuka_robot_descriptions_nw_arch
-	url = https://github.com/Martzi/kuka_robot_descriptions_nw_arch.git
