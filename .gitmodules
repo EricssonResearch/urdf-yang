@@ -11,3 +11,6 @@
 	path = robot-components/Universal_Robots_ROS2_Description_nw_arch
 	url = https://github.com/Martzi/Universal_Robots_ROS2_Description_nw_arch.git
 	branch = humble
+[submodule "robot-components/onrobot_driver"]
+	path = robot-components/onrobot_driver
+	url = https://github.com/hsnlab-iot/onrobot_driver.git
