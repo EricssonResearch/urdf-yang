@@ -21,7 +21,7 @@
 title: Topology extension for networked robotic systems
 email: marcell.balogh@ericsson.com
 description: >- # this means to ignore newlines until "baseurl:"
-  description to be edited
+  description to be added
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
