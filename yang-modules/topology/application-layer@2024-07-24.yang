@@ -1,0 +1,176 @@
+module application-layer {
+    yang-version 1.1;
+    namespace "urn:ietf:params:xml:ns:yang:application-layer";
+    prefix al;
+    
+    import ietf-network {
+        prefix nw;
+    }
+
+    import ietf-network-topology {
+        prefix nt;
+    }
+    
+    organization
+      "HSN-Lab & Ericsson Research Hungary";
+
+    contact
+      "Editor:    Attila Vidacs
+       <mailto:vidacs.attila@vik.bme.hu>
+       
+       Editor:     Marcell Balogh
+       <mailto:balogh.marcell@edu.bme.hu>";
+
+    description
+      "This module defines a model for application-layer attributes.";
+
+    revision 2024-07-24 {
+        description
+          "enums updated, aligned with attibute docs";
+        reference
+          "A YANG Data Model for Device layer in
+           Robot Network Topologies";
+    }
+
+    revision 2024-06-13 {
+        description
+          "Initial revision";
+        reference
+          "A YANG Data Model for Application layer in
+           Robot Network Topologies";
+    }
+
+    augment "/nw:networks/nw:network/nw:network-types" {
+        description
+            "Application-layer augmentation with a presence attribute.";
+        container application-layer-topology {
+            presence 
+                "indicates application-layer topology.";
+            description
+                "The presence of the container node indicates
+                application-layer topology.";
+        }
+    }
+
+    augment "/nw:networks/nw:network/nw:node" {
+        when "/nw:networks/nw:network/nw:network-types/al:application-layer-topology" {
+        }
+        description
+          "Augmentation parameters apply only for networks with
+           application-layer topology";
+        container application-layer-node-attributes {
+            description
+              "Contains application layer node attributes";
+            leaf component-name {
+                type string;
+                description
+                  "Name of the application layer system component.";
+            }
+            leaf component-type {
+                type enumeration{
+                  enum ros-node;
+                  enum generic;
+                }
+                description
+                  "Type of the application layer system component.";
+            }
+        }
+    }
+
+    augment "/nw:networks/nw:network/nw:node/"
+         +"nt:termination-point" {
+        when "/nw:networks/nw:network/nw:network-types/al:application-layer-topology" {
+        }
+        description
+          "Augmentation parameters apply only for networks with
+           application-layer topology";
+        container application-layer-termination-point-attributes {
+            description
+                "Contains application-layer termination point attributes";
+            leaf reference-interface-name {
+                type string;
+                description
+                    "Name of the reference interface.";
+            }
+            leaf reference-interface-type {
+                type enumeration{
+                  enum librealsense-api;
+                  enum ros-topic-subscriber;
+                  enum ros-topic-publisher;
+                  enum generic;
+                }
+                description
+                    "Type of the reference interface.";
+            }
+            leaf topic{
+              type string;
+              when "../reference-interface-type = 'ros-topic-subscriber' or 
+                    ../reference-interface-type = 'ros-topic-publisher'";
+            }
+            leaf message-type{
+              type string;
+              when "../reference-interface-type = 'ros-topic-subscriber' or 
+                    ../reference-interface-type = 'ros-topic-publisher'";
+            }
+            leaf hz{
+              type string;
+              when "../reference-interface-type = 'ros-topic-subscriber' or 
+                    ../reference-interface-type = 'ros-topic-publisher'";
+              units "Hz";
+              description
+                "The frequency at which messages are published or subscribed to a topic, measured in hertz (Hz)";
+            }
+        }
+    }
+
+    augment "/nw:networks/nw:network/nt:link" {
+        when "/nw:networks/nw:network/nw:network-types/al:application-layer-topology" {
+        }
+        description
+          "Contains application layer link attributes";
+        container application-layer-link-attributes {
+            description
+              "Contains application layer link attributes";
+            
+            leaf logical-link-name {
+                type string;
+                description
+                  "Name of the application layer logical link.";
+            }
+            leaf logical-link-type {
+                type enumeration{
+                  enum deterministic-periodic;
+                  enum deterministic-aperiodic;
+                  enum non-deterministic;
+                  enum ros-topic;
+                }
+                description
+                  "Type of the logical link.";
+            }
+            leaf bitrate {
+                type uint8;
+                units "Mbits/s";
+                description
+                  "The minimum data rate (in Mbits/s) the communication system must guarantee to provide at any time.";
+            }
+            leaf transfer-interval {
+                type uint8;
+                when "../logical-link-type = 'deterministic-periodic'" {}
+                units "Mbits/s";
+                description
+                  "The minimum data rate (in Mbits/s) the communication system must guarantee to provide at any time.";
+            }
+            leaf message-size {
+                type uint16;
+                description
+                  "The (maximum) size of the data packet delivered from the application.";
+            }
+            leaf e2e-latency {
+                type uint8;
+                units "ms";
+                description
+                  "The maximum time allotted to the communication system for transmitting a message [ms].";
+            }
+        }
+    }
+}
