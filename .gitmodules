@@ -4,6 +4,7 @@
 [submodule "robot-components/hebi_yang_description"]
 	path = robot-components/hebi_yang_description
 	url = https://github.com/hsnlab-iot/hebi_yang_description.git
+	branch = ros2
 [submodule "robot-components/kuka_robot_descriptions_nw_arch"]
 	path = robot-components/kuka_robot_descriptions_nw_arch
 	url = https://github.com/Martzi/kuka_robot_descriptions_nw_arch.git
