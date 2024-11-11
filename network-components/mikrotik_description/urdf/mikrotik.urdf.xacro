@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="mikrotik">
+    
+    <!-- <xacro:include filename="$(find interface_description)/urdf/wifi5.urdf.xacro"/> -->
+    <!-- <xacro:include filename="$(find interface_description)/urdf/wifi4.urdf.xacro"/> -->
+    <xacro:include filename="$(find interface_description)/urdf/cat6.urdf.xacro"/>
+
+    <xacro:macro name="mikrotik" params="parent id:=0 origin_xyz:='-1.1 1 0' origin_rpy:='0 0 0' ">
+        
+        <joint name="mikrotik-${id}-joint" type="fixed">
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+            <parent link="${parent}"/>
+            <child link="mikrotik-${id}-link"/>
+        </joint>
+ 
+        <link name="mikrotik-${id}-link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                <mesh filename="package://mikrotik_description/meshes/Mikrotik_hAPac2_Top.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://mikrotik_description/meshes/Mikrotik_hAPac2_Top.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>   
+
+        <!-- Mikrotik network topology -->
+
+        <node>
+            <node-id>mikrotik-${id}-node</node-id>
+                        
+            <dl:device-layer-node-attributes xmlns:dl="urn:ietf:params:xml:ns:yang:device-layer">
+                <dl:device-name>mikrotik-${id}</dl:device-name>
+                <dl:device-type>router</dl:device-type>
+                <dl:weight>50</dl:weight>
+            </dl:device-layer-node-attributes>
+
+            <xacro:cat6 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="0" origin_xyz="0.006 -0.008 0.022" origin_rpy="-1.57 0 0"/>
+            <xacro:cat6 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="1" origin_xyz="0.022 -0.008 0.022" origin_rpy="-1.57 0 0"/>
+            <xacro:cat6 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="2" origin_xyz="0.038 -0.008 0.022" origin_rpy="-1.57 0 0"/>
+            <xacro:cat6 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="3" origin_xyz="0.054 -0.008 0.022" origin_rpy="-1.57 0 0"/>
+            <xacro:cat6 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="4" origin_xyz="0.054 -0.008 0.022" origin_rpy="-1.57 0 0"/>
+
+            <xacro:usb30 parent="mikrotik-${id}-link" prefix="mikrotik-${id}" id="0" origin_xyz="0.057 -0.0018 0.015" origin_rpy="0 -1.57 0"/>
+
+        </node>
+
+    </xacro:macro>
+</robot>
