@@ -1,8 +1,7 @@
 ---
-layout: default
+layout: page
 title:  "YANG module structure"
-date:   2024-11-11 09:26:17 +0100
-categories: jekyll update
+permalink: /yang/
 ---
 
 ## YANG modules & features
