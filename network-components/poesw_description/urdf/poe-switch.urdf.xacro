@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
        name="poesw">
     
-    <xacro:include filename="$(find interface-description)/urdf/cat6.urdf.xacro"/>
+    <xacro:include filename="$(find interface_description)/urdf/cat6.urdf.xacro"/>
 
-    <xacro:macro name="poesw" params="parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=poesw_L2 L1_id:=poesw_L1">
+    <xacro:macro name="poesw" params="parent id:=0 origin_xyz:='-1 1.5 0' origin_rpy:='0 0 0' ">
         
-        <joint name="poeswitch_joint" type="fixed">
-            <origin xyz="-1 1.5 0" rpy="0 0 0" />
+        <joint name="poesw-${id}-joint" type="fixed">
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
             <parent link="${parent}"/>
-            <child link="poeswitch_link"/>
+            <child link="poesw-${id}-link"/>
         </joint>
 
-        <link name="poeswitch_link">
+        <link name="poesw-${id}-link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -31,46 +30,24 @@
                 </geometry>
             </collision>
         </link>   
-        
-        
-        <yang>
-            <!-- POE Switch L2 network topology -->
-            <network>
-                <network-id>${L2_network_id}</network-id>
-                <supporting-network>
-                    <network-ref>${L1_network_id}</network-ref>
-                    <tf-parent>${parent}</tf-parent>
-                </supporting-network>
-                <node>
-                    <node-id>${L2_id}</node-id>
-                    <supporting-node>
-                        <network-ref>${L2_id}</network-ref>
-                        <node-ref>${L1_id}</node-ref>
-                    </supporting-node>
-                    <xacro:cat6_L2 id="eth_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_1"/>
-                    <xacro:cat6_L2 id="eth_2" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_2"/>
-                    <xacro:cat6_L2 id="eth_3" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_3"/>
-                    <xacro:cat6_L2 id="eth_4" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_4"/>
-                    <xacro:cat6_L2 id="eth_5" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="eth_5"/>
-                </node>
-            </network>
 
-            <!-- POE Switch L1 network topology -->
-            <network>
-                <network-id>${L1_network_id}</network-id>
-                <node>
-                    <node-id>${L1_id}</node-id>
-                    <layer1:l1-node-attributes>
-                        <device-type>switch</device-type>
-                    </layer1:l1-node-attributes>
-                    <xacro:cat6_L1 id="eth_1" connector_type="rj45" connector_format="female"/>
-                    <xacro:cat6_L1 id="eth_2" connector_type="rj45" connector_format="female"/>
-                    <xacro:cat6_L1 id="eth_3" connector_type="rj45" connector_format="female"/>
-                    <xacro:cat6_L1 id="eth_4" connector_type="rj45" connector_format="female"/>
-                    <xacro:cat6_L1 id="eth_5" connector_type="rj45" connector_format="female"/>
-                </node>
-            </network>
+        <!-- poe-switch network topology -->
+        <node>
+            <node-id>poesw-${id}-node</node-id>
+                        
+            <dl:device-layer-node-attributes xmlns:dl="urn:ietf:params:xml:ns:yang:device-layer">
+                <dl:device-name>poesw-${id}</dl:device-name>
+                <dl:device-type>switch</dl:device-type>
+                <dl:device-weight>230</dl:device-weight>
+            </dl:device-layer-node-attributes>
 
-        </yang>
+            <xacro:cat6 parent="poesw-${id}-link" prefix="poesw-${id}" id="0" origin_xyz="-0.014 0.002 0" origin_rpy="1.5707963 0 0"/>
+            <xacro:cat6 parent="poesw-${id}-link" prefix="poesw-${id}" id="1" origin_xyz="0.002 0.002 0" origin_rpy="1.5707963 0 0"/>
+            <xacro:cat6 parent="poesw-${id}-link" prefix="poesw-${id}" id="2" origin_xyz="0.018 0.002 0" origin_rpy="1.5707963 0 0"/>
+            <xacro:cat6 parent="poesw-${id}-link" prefix="poesw-${id}" id="3" origin_xyz="0.034 0.002 0" origin_rpy="1.5707963 0 0"/>
+            <xacro:cat6 parent="poesw-${id}-link" prefix="poesw-${id}" id="4" origin_xyz="0.05 0.002 0" origin_rpy="1.5707963 0 0"/>
+
+        </node>
+
     </xacro:macro>
 </robot>

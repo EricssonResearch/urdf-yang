@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
        name="nw-5g-modem">
     
-    <xacro:include filename="$(find interface-description)/urdf/usb30.urdf.xacro" />
-    <xacro:include filename="$(find interface-description)/urdf/nw_5g_rel15.urdf.xacro"/>
+    <xacro:include filename="$(find interface_description)/urdf/usb30.urdf.xacro" />
+    <!-- <xacro:include filename="$(find interface_description)/urdf/nw_5g_rel15.urdf.xacro"/> -->
 
-    <xacro:macro name="nw-5g-modem" params=" parent L2_network_id:=network_level L1_network_id:=device_level L2_id:=nw_5g_modem_L2 L1_id:=nw_5g_modem_L1">
+    <xacro:macro name="nw-5g-modem" params="parent id:=0 origin_xyz:='-1 1.2 0' origin_rpy:='0 0 3.14' ">
      
-        <joint name="nw-5g-modem_joint" type="fixed">
-            <origin xyz="-1 1.2 0" rpy="0 0 3.14" />
+        <joint name="nw-5g-modem_${id}_joint" type="fixed">
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
             <parent link="${parent}"/>
-            <child link="nw-5g-modem_link"/>
+            <child link="nw-5g-modem-${id}-link"/>
         </joint>
 
-        <link name="nw-5g-modem_link">
+        <link name="nw-5g-modem-${id}-link">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
@@ -33,38 +32,18 @@
             </collision>
         </link>
 
-    
-        <yang>
-            <!-- 5gmodem L2 network topology -->
-            <network>
-                <network-id>${L2_network_id}</network-id>
-                <supporting-network>
-                    <network-ref>${L1_network_id}</network-ref>
-                    <tf-parent>${parent}</tf-parent>
-                </supporting-network>
-                <node>
-                    <node-id>${L2_id}</node-id>
-                    <supporting-node>
-                        <network-ref>${L1_network_id}</network-ref>
-                        <node-ref>${L1_id}</node-ref>
-                    </supporting-node>
-                    <xacro:usb30_L2 id="usb_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="usb_1"/>
-                    <xacro:nw_5g_rel15_L2 id="wireless_1" supporting_network="${L1_network_id}" supporting_node="${L1_id}" supporting_tp="wireless_1"/>
-                </node>
-            </network>
+        <node>
+            <node-id>nw-5g-modem-${id}-node</node-id>
+                        
+            <dl:device-layer-node-attributes xmlns:dl="urn:ietf:params:xml:ns:yang:device-layer">
+                <dl:device-name>nw-5g-modem-${id}</dl:device-name>
+                <dl:device-type>modem</dl:device-type>
+            </dl:device-layer-node-attributes>
 
-            <!-- 5gmodem L1 network topology -->
-            <network>
-                <network-id>${L1_network_id}</network-id>
-                <node>
-                    <node-id>${L1_id}</node-id>
-                    <layer1:l1-node-attributes>
-                        <device-type>nw-5g-modem</device-type>
-                    </layer1:l1-node-attributes>
-                    <xacro:usb30_L1 id="usb_1" connector_type="usb-std_A" connector_format="female"/>
-                    <xacro:nw_5g_rel15_L1 id="wireless_1" connector_type="wireless" connector_format="wireless"/>
-                </node>
-            </network>
-        </yang>
+            <xacro:cat6 parent="nw-5g-modem-${id}-link" prefix="nw-5g-modem-${id}" id="0" origin_xyz="0.0 0.1 0.2" origin_rpy="-1.57 0 0"/>
+            <xacro:usb30 parent="nw-5g-modem-${id}-link" prefix="nw-5g-modem-${id}" id="0" origin_xyz="0 0.044 0" origin_rpy="1.57 0 0"/>
+
+        </node>
+
     </xacro:macro>
 </robot>
