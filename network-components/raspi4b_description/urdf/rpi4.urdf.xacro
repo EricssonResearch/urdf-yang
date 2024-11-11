@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="rpi4">
+
+    <xacro:include filename="$(find interface_description)/urdf/usb30.urdf.xacro"/>
+    <xacro:include filename="$(find interface_description)/urdf/usb20.urdf.xacro"/>
+    <xacro:include filename="$(find interface_description)/urdf/cat5e.urdf.xacro"/>
+
+    <xacro:macro name="rpi4" params="parent id:=0 origin_xyz='-1 1.8 0' origin_rpy:='0 0 0' ">
+        
+        <joint name="rpi4-${id}-link" type="fixed">
+            <origin xyz="${origin_xyz}" rpy="${origin_rpy}"/>
+            <parent link="${parent}"/>
+            <child link="rpi4-${id}-link"/>
+        </joint>
+
+        <link name="rpi4-${id}-link">
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                <mesh filename="package://raspi4b_description/meshes/raspberry_pi_4_model_b.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="LightGrey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <mesh filename="package://raspi4b_description/meshes/raspberry_pi_4_model_b.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+        
+        <!-- Raspberry Pi network topology -->
+
+        <node>
+            <node-id>rpi4-${id}-node</node-id>
+                        
+            <dl:device-layer-node-attributes xmlns:dl="urn:ietf:params:xml:ns:yang:device-layer">
+                <dl:device-name>rpi4-${id}</dl:device-name>
+                <dl:device-type>pc</dl:device-type>
+                <dl:device-weight>500</dl:device-weight>
+            </dl:device-layer-node-attributes>
+
+            <xacro:cat6 parent="rpi4-${id}-link" prefix="rpi4-${id}" id="0" origin_xyz="0.04 0.068 0.032" origin_rpy="-1.5707963 0 0"/>
+
+            <xacro:usb30 parent="rpi4-${id}-link" prefix="rpi4-${id}" id="0" origin_xyz="0.087 0.119 0.019" origin_rpy="1.57 1.57 0"/>
+            <xacro:usb30 parent="rpi4-${id}-link" prefix="rpi4-${id}" id="1" origin_xyz="0.075 0.119 0.0199" origin_rpy="1.57 1.57 0"/>
+
+            <xacro:usb20 parent="rpi4-${id}-link" prefix="rpi4-${id}" id="0" origin_xyz="0.01 0.119 0.019" origin_rpy="1.57 1.57 0"/>
+            <xacro:usb20 parent="rpi4-${id}-link" prefix="rpi4-${id}" id="1" origin_xyz="0.02 0.119 0.0199" origin_rpy="1.57 1.57 0"/>
+
+        </node>       
+    </xacro:macro>
+</robot>
