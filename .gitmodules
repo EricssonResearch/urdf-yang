@@ -1,6 +1,7 @@
 [submodule "robot-components/realsense-ros-nw_arch"]
 	path = robot-components/realsense-ros-nw_arch
 	url = https://github.com/Martzi/realsense-ros-nw_arch.git
+	branch = ros2-development
 [submodule "robot-components/hebi_yang_description"]
 	path = robot-components/hebi_yang_description
 	url = https://github.com/hsnlab-iot/hebi_yang_description.git
