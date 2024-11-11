@@ -1,13 +1,14 @@
-wireless-connection:
+wired-connection:
+  type: cat5e
   latency: 5
-  bandwidth: 600
+  bandwidth: 1000
   jitter: 10
-  packet-loss: 0.02
+  packet-loss: 0.01
   reliability: 0.95
   availability: 0.98
   qos-level: medium
-  energy-efficiency: medium
+  energy-efficiency: low
   compatibility: partially-compatible
-  cost: 10
+  cost: 30
   scalability: medium
-  security-level: medium
+  security-level: low

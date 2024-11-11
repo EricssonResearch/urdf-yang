@@ -1,4 +1,5 @@
 wired-connection:
+  type: usb-c
   latency: 5
   bandwidth: 4800
   jitter: 8

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
-       xmlns:robot-network-topology="urn:ietf:params:xml:ns:yang:robot-network-topology"
-       xmlns:layer1="urn:ietf:params:xml:ns:yang:layer1"
-       xmlns:layer2="urn:ietf:params:xml:ns:yang:layer2"
+       xmlns:ietf-network-topology="urn:ietf:params:xml:ns:yang:ietf-network-topology"
+       xmlns:device-layer="urn:ietf:params:xml:ns:yang:device-layer"
+       xmlns:network-layer="urn:ietf:params:xml:ns:yang:network-layer"
        name="wifi4">
 
-    <xacro:property name="wifi4_yaml_file" value="$(find interface-description)/config/wifi4.yaml" />
+    <xacro:property name="wifi4_yaml_file" value="$(find interface_description)/config/wifi4.yaml" />
     <xacro:property name="wifi4_props" value="${xacro.load_yaml(wifi4_yaml_file)}"/>
+    <xacro:property name="wifi4_type" value="${wifi4_props['wireless-connection']['type']}"/>
     <xacro:property name="wifi4_length" value="${wifi4_props['wireless-connection']['length']}"/>
     <xacro:property name="wifi4_bandwidth" value="${wifi4_props['wireless-connection']['bandwidth']}"/>
     <xacro:property name="wifi4_jitter" value="${wifi4_props['wireless-connection']['jitter']}"/>
@@ -24,28 +25,32 @@
     <xacro:macro name="wifi4" params="parent L2_network_id L1_network_id L2_id:=wifi4_L2 L1_id:=wifi4_L1"/>
 
     <xacro:macro name="wifi4_L2" params="id supporting_network supporting_node supporting_tp">
-        <robot-network-topology:termination-point>
+        <ietf-network-topology:termination-point>
             <tp-id>${id}</tp-id>
             <supporting-termination-point>
                 <network-ref>${supporting_network}</network-ref>
                 <node-ref>${supporting_node}</node-ref>
                 <tp-ref>${supporting_tp}</tp-ref>
             </supporting-termination-point>
-            <layer2:l2-termination-point-attributes>
+            <network-layer:network-layer-termination-point-attributes>
+                <tp-type>${wifi4_type}</tp-type>
                 <bandwidth>${wifi4_bandwidth}</bandwidth>
                 <jitter>${wifi4_jitter}</jitter>
-            </layer2:l2-termination-point-attributes>
-        </robot-network-topology:termination-point>
+                <packet_loss>${wifi4_packet_loss}</packet_loss>
+                <reliability>${wifi4_reliability}</reliability>
+                <cost>${wifi4_cost}</cost>
+            </network-layer:network-layer-termination-point-attributes>
+        </ietf-network-topology:termination-point>
     </xacro:macro>
 
     <xacro:macro name="wifi4_L1" params="id connector_type connector_format">
-        <robot-network-topology:termination-point>
+        <ietf-network-topology:termination-point>
             <tp-id>${id}</tp-id>
-            <layer1:l1-termination-point-attributes>
+            <device-layer:device-layer-termination-point-attributes>
                 <connector-type>${connector_type}</connector-type>
                 <connector-format>${connector_format}</connector-format>
-            </layer1:l1-termination-point-attributes>
-        </robot-network-topology:termination-point>
+            </device-layer:device-layer-termination-point-attributes>
+        </ietf-network-topology:termination-point>
     </xacro:macro>
 
 </robot>

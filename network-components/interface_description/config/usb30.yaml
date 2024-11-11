@@ -1,4 +1,5 @@
 wired-connection:
+  type: usb30
   latency: 5
   bandwidth: 4800
   jitter: 8

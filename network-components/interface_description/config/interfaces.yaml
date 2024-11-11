@@ -1,0 +1,53 @@
+interfaces:
+  USB:
+    - name: USB 2.0
+      speed: "480 Mbps"
+      connector: "Type-A, Type-B, Mini, Micro"
+      power: "2.5W"
+      description: "USB 2.0 is an older standard that provides moderate speeds and power output."
+    - name: USB 3.0
+      speed: "5 Gbps"
+      connector: "Type-A, Type-B, Micro-B"
+      power: "4.5W"
+      description: "USB 3.0, also known as SuperSpeed USB, offers faster data transfer rates and improved power efficiency."
+    - name: USB 3.1
+      speed: "10 Gbps"
+      connector: "Type-A, Type-C"
+      power: "Up to 100W (with USB Power Delivery)"
+      description: "USB 3.1 provides even faster speeds and the new Type-C connector, which is reversible."
+    - name: USB 3.2
+      speed: "20 Gbps"
+      connector: "Type-C"
+      power: "Up to 100W (with USB Power Delivery)"
+      description: "USB 3.2 doubles the data rate of USB 3.1 and uses the Type-C connector."
+    - name: USB4
+      speed: "40 Gbps"
+      connector: "Type-C"
+      power: "Up to 100W (with USB Power Delivery)"
+      description: "USB4 offers the fastest speeds, improved performance, and backward compatibility with Thunderbolt 3."
+  Ethernet:
+    - name: Fast Ethernet
+      speed: "100 Mbps"
+      connector: "RJ-45"
+      standard: "IEEE 802.3u"
+      description: "Fast Ethernet is an older standard that provides sufficient speed for basic networking tasks."
+    - name: Gigabit Ethernet
+      speed: "1 Gbps"
+      connector: "RJ-45"
+      standard: "IEEE 802.3ab"
+      description: "Gigabit Ethernet is a common standard for high-speed networking in homes and offices."
+    - name: 10 Gigabit Ethernet
+      speed: "10 Gbps"
+      connector: "RJ-45, SFP+"
+      standard: "IEEE 802.3ae"
+      description: "10 Gigabit Ethernet is used for very high-speed network connections, often in data centers."
+    - name: 40 Gigabit Ethernet
+      speed: "40 Gbps"
+      connector: "QSFP+"
+      standard: "IEEE 802.3ba"
+      description: "40 Gigabit Ethernet is typically used in large-scale data centers and enterprise networks."
+    - name: 100 Gigabit Ethernet
+      speed: "100 Gbps"
+      connector: "QSFP28"
+      standard: "IEEE 802.3cd"
+      description: "100 Gigabit Ethernet is used for extremely high-speed connections in advanced data centers and networks."

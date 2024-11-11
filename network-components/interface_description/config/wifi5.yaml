@@ -1,4 +1,5 @@
 wireless-connection:
+  type: wifi5
   latency: 10
   bandwidth: 3500
   jitter: 15

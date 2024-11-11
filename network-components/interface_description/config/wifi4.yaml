@@ -1,13 +1,14 @@
-wired-connection:
-  latency: 10
-  bandwidth: 480
-  jitter: 15
+wireless-connection:
+  type: wifi4
+  latency: 5
+  bandwidth: 600
+  jitter: 10
   packet-loss: 0.02
-  reliability: 0.90
+  reliability: 0.95
   availability: 0.98
   qos-level: medium
-  energy-efficiency: low
+  energy-efficiency: medium
   compatibility: partially-compatible
-  cost: 5
+  cost: 10
   scalability: medium
   security-level: medium
