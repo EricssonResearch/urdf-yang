@@ -1,7 +1,7 @@
 ---
 layout: page
 title:  "Publications & citation"
-permalink: /publication/
+permalink: /urdf-yang/publication/
 ---
 
 ## Related publication & citation
