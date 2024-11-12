@@ -1,7 +1,7 @@
 ---
 layout: page
 title:  "YANG module structure"
-permalink: /urdf-yang/yang/
+permalink: /yang/
 ---
 
 ## YANG modules & features

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-permalink: /urdf-yang
+permalink: /about/
 ---
 
 You can find the source code for URDF-YANG descriptions
