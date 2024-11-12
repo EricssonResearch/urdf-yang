@@ -102,10 +102,12 @@ module: ietf-network
            +--rw nl:element?   string
 ```
 
-## testing:
+## Testing:
 
-yang modulok hozzáadása:
+Add yang modules from CLI:
 
-add src/yang-modules/standard-modules/ietf-network-topology@2018-02-26.yang src/yang-modules/standard-modules/ietf-network@2018-02-26.yang src/yang-modules/standard-modules/ietf-inet-types@2013-07-15.yang src/yang-modules/interfaces/ethernet-port.yang src/yang-modules/interfaces/usb-port.yang src/yang-modules/topology/device-layer@2024-09-10.yang src/yang-modules/topology/network-layer@2024-07-24.yang
+```add src/yang-modules/standard-modules/ietf-network-topology@2018-02-26.yang src/yang-modules/standard-modules/ietf-network@2018-02-26.yang src/yang-modules/standard-modules/ietf-inet-types@2013-07-15.yang src/yang-modules/interfaces/ethernet-port.yang src/yang-modules/interfaces/usb-port.yang src/yang-modules/topology/device-layer@2024-09-10.yang src/yang-modules/topology/network-layer@2024-07-24.yang```
 
-validálás yanglint cli-ből:  data -t data src/yang-modules/instance-data3.xml 
+Validating from yanglint CLI: 
+
+ ```data -t data src/yang-modules/instance-data3.xml ```
