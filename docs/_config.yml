@@ -22,9 +22,8 @@ title: Topology extension for networked robotic systems
 email: marcell.balogh@ericsson.com
 description: >- # this means to ignore newlines until "baseurl:"
   Network topology extension for IIoT systems
-baseurl: "/urdf-yang" # the subpath of your site, e.g. /blog
+baseurl: "/urdf-yang/" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-
 github_username: martzi
 
 # Build settings
