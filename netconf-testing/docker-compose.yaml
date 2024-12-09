@@ -1,0 +1,19 @@
+services:
+  netopeer2:
+    image: sysrepo/sysrepo-netopeer2:latest
+    ports:
+      - "830:830"
+      - "6513:6513"
+    networks:
+      - netconf_net
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - netconf_net
+
+networks:
+  netconf_net:
+    driver: bridge
