@@ -1,0 +1,1 @@
+<xacro:topology-link src_node = "poesw_1" src_tp="rj45_1" dst_node="radiodot_6" dst_tp="rj45_0" conn_type="wired" reconfig="sw_supported"/>
