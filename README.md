@@ -41,6 +41,7 @@
 ## Related publication & citation
 
 [M. Balogh, B. Kovács, A. Vidács, and G. Szabó, “Towards a connected robotic ecosystem,” in 2023 IEEE Conference on Standards for Communications and Networking (CSCN), 2023](https://ieeexplore.ieee.org/document/10453178)
+
 [G. Szabó, M. Balogh, Á. Szanyi, D. Bata, A. Vidács and I. Komlósi, "On the Connectivity Model Management of Industrial IoT Devices," 2024 IEEE 7th International Conference and Workshop Óbuda on Electrical and Power Engineering (CANDO-EPE), 2024](https://ieeexplore.ieee.org/document/10772748)
 
 ```
