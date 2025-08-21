@@ -37,13 +37,13 @@
 - SimCom sim8202g 5G modem
 - Raspberry Pi 4B
 
+## Demonstration video
+
+[![Extending robot components with connectivity features](https://img.youtube.com/vi/lF3HMBzpvMY/0.jpg)](https://www.youtube.com/watch?v=lF3HMBzpvMY)
 
 ## Related publication & citation
 
 [M. Balogh, B. Kovács, A. Vidács, and G. Szabó, “Towards a connected robotic ecosystem,” in 2023 IEEE Conference on Standards for Communications and Networking (CSCN), 2023](https://ieeexplore.ieee.org/document/10453178)
-
-[G. Szabó, M. Balogh, Á. Szanyi, D. Bata, A. Vidács and I. Komlósi, "On the Connectivity Model Management of Industrial IoT Devices," 2024 IEEE 7th International Conference and Workshop Óbuda on Electrical and Power Engineering (CANDO-EPE), 2024](https://ieeexplore.ieee.org/document/10772748)
-
 ```
 @INPROCEEDINGS{10453178,
   author={Balogh, Marcell and Kovács, Bence and Vidács, Attila and Szabó, Géza},
@@ -54,5 +54,19 @@
   number={},
   pages={142-147},
   doi={10.1109/CSCN60443.2023.10453178}
+}
+```
+[G. Szabó, M. Balogh, Á. Szanyi, D. Bata, A. Vidács and I. Komlósi, "On the Connectivity Model Management of Industrial IoT Devices," 2024 IEEE 7th International Conference and Workshop Óbuda on Electrical and Power Engineering (CANDO-EPE), 2024](https://ieeexplore.ieee.org/document/10772748)
+```
+@INPROCEEDINGS{10772748,
+  author={Szabó, Géza and Balogh, Marcell and Szanyi, Ádám and Bata, Dániel and Vidács, Attila and Komlósi, István and Pepó, Tamás},
+  booktitle={2024 IEEE 7th International Conference and Workshop Óbuda on Electrical and Power Engineering (CANDO-EPE)}, 
+  title={On the Connectivity Model Management of Industrial IoT Devices}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={213-218},
+  keywords={Visualization;Power engineering;Service robots;Network topology;Systems architecture;Fourth Industrial Revolution;Asset management;Complex systems;Industrial Internet of Things;cyber-physical systems;asset management;con-nectivity},
+  doi={10.1109/CANDO-EPE65072.2024.10772748}
 }
 ```
